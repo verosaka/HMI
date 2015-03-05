@@ -87,7 +87,9 @@ io.on('connection', function(socket) {
   require('./../controller/backgroundDebug').sockets(socket);
 
   // Message Feed Module - Initial emit
-  mMessageFeed.emitMessageFeedInitial();
+  if (typeof mMessageFeed !== 'undefined') {
+    mMessageFeed.emitMessageFeedInitial();
+  }
 
   // Register Listeners for backgroundFeedback
   require('./../controller/backgroundFeedback').sockets(socket);
@@ -96,6 +98,7 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     var oldClients = connectedClients;
     connectedClients--;
-    console.log('Number of users from ' + oldClients + ' to ' + connectedClients);
+    console.log('Number of users from ' + oldClients + ' to '
+        + connectedClients);
   });
 });

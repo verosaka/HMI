@@ -5,6 +5,7 @@
  */
 function service() {
 
+  assert(typeof mMessageFeed !== 'undefined');
   mMessageFeed.createMonitoredItems(function(err, feed) {
     if (!err) {
       console.log('Event listeners on all MessageFeed entries created');

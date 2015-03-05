@@ -6,7 +6,9 @@
  */
 
 // Message Feed
-var messageFeed = require('./backgroundMessageFeed').service();
+if (typeof mMessageFeed !== 'undefined') {
+  var messageFeed = require('./backgroundMessageFeed').service();
+}
 
 // Time
 var serverTime = require('./backgroundTime.js').service();

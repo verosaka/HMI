@@ -19,22 +19,22 @@ var assert = require('assert');
  * @returns
  */
 module = function() {
-  this.NumberOfSkillInputs = 2; // 15 max, but only 2 needed!
-  this.NumberOfParameterInputs = 1; // 5 max
+  this.NumberOfSkillInputs = 0; // 15 max, but only 2 needed!
+  this.NumberOfParameterInputs = 0; // 5 max
 
-  this.NumberOfSkillOutputs = 2; // 15 max, but only 2 needed!
-  this.NumberOfParameterOutputs = 1; // 5 max
-  this.NumberOfStateValues = 2; // 10 max
+  this.NumberOfSkillOutputs = 0; // 15 max, but only 2 needed!
+  this.NumberOfParameterOutputs = 0; // 5 max
+  // this.NumberOfStateValues = 2; // 10 max
 
   this.isInitialized = false;
   this.rawData = undefined;
   this.jadeData = {};
 
   this.socketRoom = 'input-module';
-  this.ModuleId = 2501;
+  this.ModuleId = 1101;
   this.SkillID = 1402;
   this.PositionOutput = 1345;
-  this.ModuleName = 'Input Module'
+  this.ModuleName = 'Input Module';
 
   this.opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAInputModule);
   console.log(preLog() + 'endpoint', CONFIG.OPCUAInputModule);
@@ -69,7 +69,7 @@ module.prototype.start = function(callback) {
       callback(err);
     }
   });
-}
+};
 
 /**
  * initialize maintenance module opcua connection
@@ -104,7 +104,8 @@ module.prototype.initialize = function(callback) {
 module.prototype.getModuleData = function(callbackMain) {
   var self = this;
 
-  assert(self.isInitialized, 'opc is not initialized call self.initialize() *async* first');
+  assert(self.isInitialized,
+      'opc is not initialized call self.initialize() *async* first');
   assert(typeof callbackMain === "function");
 
   async.series([ function(callback) {
@@ -125,31 +126,49 @@ module.prototype.getModuleData = function(callbackMain) {
 module.prototype.makeItReady = function(callbackMain) {
   var self = this;
 
-  async.series([ function(callback) {
-    self.setValue(self.jadeData.Dummy.nodeId, false, callback);
-  }, function(callback) {
-    console.log(preLog(), self.jadeData.SkillOutput[0].ID.nodeId);
-    self.setValue(self.jadeData.SkillOutput[0].ID.nodeId, self.SkillID, callback);
-  }, function(callback) {
-    self.setValue(self.jadeData.SkillOutput[0].Dummy.nodeId, false, callback);
-  }, function(callback) {
-    self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, true, callback);
-  }, function(callback) { // Set Defaults now
-    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false, callback);
-  }, function(callback) {
-    self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, false, callback);
-  }, function(callback) {
-    self.setValue(self.jadeData.SkillInput[0].Execute.nodeId, false, callback);
-  }, function(callback) {
-    self.setValue(self.jadeData.PositionOutput.nodeId, self.PositionOutput, callback); // Default Position
-  }, function(callback) {
-    self.setValue(self.jadeData.Name.nodeId, self.ModuleName, callback); // Default Position
-  }, function(callback) {
-    console.log(preLog() + 'OK - Input Module is set to Ready-State');
-    callbackMain();
-  } ]);
+  async
+      .series([
+          function(callback) {
+            self.setValue(self.jadeData.Dummy.nodeId, false, callback);
+          },
+          function(callback) {
+            console.log(preLog(), self.jadeData.SkillOutput[0].ID.nodeId);
+            self.setValue(self.jadeData.SkillOutput[0].ID.nodeId, self.SkillID,
+                callback);
+          },
+          function(callback) {
+            self.setValue(self.jadeData.SkillOutput[0].Dummy.nodeId, false,
+                callback);
+          },
+          function(callback) {
+            self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, true,
+                callback);
+          },
+          function(callback) { // Set Defaults now
+            self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false,
+                callback);
+          },
+          function(callback) {
+            self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, false,
+                callback);
+          },
+          function(callback) {
+            self.setValue(self.jadeData.SkillInput[0].Execute.nodeId, false,
+                callback);
+          },
+          function(callback) {
+            self.setValue(self.jadeData.PositionOutput.nodeId,
+                self.PositionOutput, callback); // Default Position
+          },
+          function(callback) {
+            self.setValue(self.jadeData.Name.nodeId, self.ModuleName, callback); // Default
+            // Position
+          }, function(callback) {
+            console.log(preLog() + 'OK - Input Module is set to Ready-State');
+            callbackMain();
+          } ]);
 
-}
+};
 
 // /////////////////////////////////////////////////////////////////
 // OPC UA Subscriptions
@@ -163,7 +182,8 @@ module.prototype.makeItReady = function(callbackMain) {
 module.prototype.subscribe = function() {
   var self = this;
 
-  assert(self.isInitialized, 'opc is not initialized call self.initialize() *async* first');
+  assert(self.isInitialized,
+      'opc is not initialized call self.initialize() *async* first');
 
   var monitor = [ {
     nodeId : self.jadeData.SkillInput[0].Execute.nodeId,
@@ -188,7 +208,8 @@ module.prototype.onBusyChange = function(data) {
   var self = mi5Input; // since it is called before getModuleData
 
   if (data.value.value === true) {
-    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Busy.updateEvent, true);
+    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Busy.updateEvent,
+        true);
   }
   console.log(preLog() + 'onBusyChange', data.value.value);
 };
@@ -196,7 +217,8 @@ module.prototype.onDoneChange = function(data) {
   var self = mi5Input; // since it is called before getModuleData
 
   if (data.value.value === true) {
-    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Done.updateEvent, true);
+    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Done.updateEvent,
+        true);
   }
   console.log(preLog() + 'onDoneChange', data.value.value);
 };
@@ -204,7 +226,8 @@ module.prototype.onExecuteChange = function(data) {
   var self = mi5Input; // since it is called before getModuleData
 
   if (data.value.value === true) {
-    io.to(self.socketRoom).emit(self.jadeData.SkillInput[0].Execute.updateEvent, true);
+    io.to(self.socketRoom).emit(
+        self.jadeData.SkillInput[0].Execute.updateEvent, true);
     // io.to(self.socketRoom).emit('reloadPageInput', 0);
     // Navbar
     io.emit('inputRequired', true);
@@ -236,11 +259,13 @@ module.prototype.ioRegister = function(socket) {
 
   assert(typeof socket !== 'undefined');
 
-  socket.on(self.jadeData.SkillOutput[0].Busy.submitEvent, self.socketUserIsBusy);
-  socket.on(self.jadeData.SkillOutput[0].Done.submitEvent, self.socketUserIsDone);
+  socket.on(self.jadeData.SkillOutput[0].Busy.submitEvent,
+      self.socketUserIsBusy);
+  socket.on(self.jadeData.SkillOutput[0].Done.submitEvent,
+      self.socketUserIsDone);
 
   console.log(preLog() + 'OK - Input Module - event listeners registered');
-}
+};
 
 module.prototype.socketUserIsBusy = function() {
   var self = this;
@@ -250,7 +275,7 @@ module.prototype.socketUserIsBusy = function() {
   self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
   });
 
-}
+};
 
 module.prototype.socketUserIsDone = function() {
   var self = this;
@@ -260,7 +285,7 @@ module.prototype.socketUserIsDone = function() {
   self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false, function(err) {
     console.log(preLog() + 'OK - waiting for PT to set execute = false');
   });
-}
+};
 
 // /////////////////////////////////////////////////////////////////
 // Backend
@@ -282,7 +307,7 @@ module.prototype.monitorItems = function(itemArray) {
     mI.on('changed', item.callback);
   });
   return true;
-}
+};
 
 /**
  * set a key:value object based on a basenode
@@ -301,7 +326,8 @@ module.prototype.setObject = function(baseNode, dataObject, callback) {
   assert(typeof baseNode === "string");
   assert(_.isObject(dataObject));
 
-  self.opc.mi5WriteObject(baseNode, dataObject, self.Mi5ModuleInterface, callback);
+  self.opc.mi5WriteObject(baseNode, dataObject, self.Mi5ModuleInterface,
+      callback);
 };
 
 /**
@@ -343,7 +369,8 @@ module.prototype.setValue = function(nodeId, value, callback) {
 module.prototype.cutLastElement = function(nodeId) {
   var exp = /\w*[0-9]?/g
   var result = nodeId.match(exp);
-  result = _.compact(result); // [ 'MI5', 'Module2501', 'SkillInput', 'SkillInput0',...]
+  result = _.compact(result); // [ 'MI5', 'Module2501', 'SkillInput',
+  // 'SkillInput0',...]
   result.pop();
   result = result.join('.') + '.';
   return result;
@@ -359,7 +386,8 @@ module.prototype.cutLastElement = function(nodeId) {
 module.prototype.getInput = function(callback) {
   var self = this;
 
-  assert(self.isInitialized, 'opc is not initialized call self.initialize() *async* first');
+  assert(self.isInitialized,
+      'opc is not initialized call self.initialize() *async* first');
   assert(typeof callback === 'function');
 
   var baseNodeTask = self.structInput('MI5.Module' + self.ModuleId + '.Input.');
@@ -367,7 +395,8 @@ module.prototype.getInput = function(callback) {
   self.opc.mi5ReadArray(baseNodeTask, function(err, data) {
     // console.log(err, data);
     // Convert opc.Mi5 object to jadeData
-    var mi5Object = opcH.mapMi5ArrayToObject(data, self.structInputObjectBlank());
+    var mi5Object = opcH.mapMi5ArrayToObject(data, self
+        .structInputObjectBlank());
 
     _.extend(self.jadeData, mi5Object);
     callback(err, mi5Object);
@@ -386,17 +415,20 @@ module.prototype.getInput = function(callback) {
 module.prototype.getOutput = function(callback) {
   var self = this;
 
-  assert(self.isInitialized, 'opc is not initialized call self.initialize() *async* first');
+  assert(self.isInitialized,
+      'opc is not initialized call self.initialize() *async* first');
   assert(typeof callback === 'function');
 
   // Generate Array to read
-  var baseNodeStruct = self.structOutput('MI5.Module' + self.ModuleId + '.Output.');
+  var baseNodeStruct = self.structOutput('MI5.Module' + self.ModuleId
+      + '.Output.');
   // console.log(baseNodeStruct);
 
   self.opc.mi5ReadArray(baseNodeStruct, function(err, data) {
     // console.log(err, data);
     // Convert opc.Mi5 object to jadeData
-    var mi5Object = opcH.mapMi5ArrayToObject(data, self.structOutputObjectBlank());
+    var mi5Object = opcH.mapMi5ArrayToObject(data, self
+        .structOutputObjectBlank());
 
     _.extend(self.jadeData, mi5Object);
     callback(err, mi5Object);
@@ -454,7 +486,8 @@ module.prototype.structInputObjectBlank = function() {
 module.prototype.structInput = function(baseNode) {
   var self = this;
 
-  var nodes = [ 'ConnectionTestInput', 'EmergencyStop', 'Mode', 'PositionInput', 'Watchbit' ];
+  var nodes = [ 'ConnectionTestInput', 'EmergencyStop', 'Mode',
+      'PositionInput', 'Watchbit' ];
   // Add all 50 Skills
   for (var i = 0; i <= self.NumberOfSkillInputs; i++) {
     var temp = self.structSkillInput('SkillInput.SkillInput' + i + '.');
@@ -483,7 +516,8 @@ module.prototype.structSkillInput = function(baseNode) {
   var nodes = [ 'Execute' ];
   // Add all 5 Parameters
   for (var i = 0; i <= self.NumberOfParameterInputs; i++) {
-    var temp = self.structParameterInput('ParameterInput.ParameterInput' + i + '.');
+    var temp = self.structParameterInput('ParameterInput.ParameterInput' + i
+        + '.');
     temp.forEach(function(item) {
       nodes.push(item);
     });
@@ -539,7 +573,7 @@ module.prototype.structOutputObjectBlank = function() {
     PosisitionOutput : '',
     PositionSensor : '',
     SkillOutput : [],
-    StateValue : [],
+  // StateValue : [],
   };
   // Skills // Dummyobject needs to be insed the loop - pass by reference issue
   // imho
@@ -574,16 +608,16 @@ module.prototype.structOutputObjectBlank = function() {
     outputDummy.SkillOutput.push(skillOutputDummy);
   }); // end forEach Skills
 
-  _123n(0, self.NumberOfStateValues).forEach(function(k) {
-    var stateValueDummy = {
-      Description : '',
-      Dummy : '',
-      Name : '',
-      Unit : '',
-      Value : ''
-    };
-    outputDummy.StateValue.push(stateValueDummy);
-  });
+  // _123n(0, self.NumberOfStateValues).forEach(function(k) {
+  // var stateValueDummy = {
+  // Description : '',
+  // Dummy : '',
+  // Name : '',
+  // Unit : '',
+  // Value : ''
+  // };
+  // outputDummy.StateValue.push(stateValueDummy);
+  // });
   return outputDummy;
 }
 
@@ -597,8 +631,9 @@ module.prototype.structOutputObjectBlank = function() {
 module.prototype.structOutput = function(baseNode) {
   var self = this;
 
-  var nodes = [ 'Connected', 'ConnectionTestInput', 'CurrentTaskDescription', 'Dummy', 'Error',
-      'ErrorDescription', 'ErrorID', 'ID', 'IP', 'Idle', 'Name', 'PositionOutput', 'PositionSensor' ];
+  var nodes = [ 'Connected', 'ConnectionTestInput', 'CurrentTaskDescription',
+      'Dummy', 'Error', 'ErrorDescription', 'ErrorID', 'ID', 'IP', 'Idle',
+      'Name', 'PositionOutput', 'PositionSensor' ];
   // Add SkillOutputs
   for (var i = 0; i <= self.NumberOfSkillOutputs; i++) {
     var temp = self.structSkillOutput('SkillOutput.SkillOutput' + i + '.');
@@ -632,10 +667,12 @@ module.prototype.structOutput = function(baseNode) {
 module.prototype.structSkillOutput = function(baseNode) {
   var self = this;
 
-  var nodes = [ 'Activated', 'Busy', 'Done', 'Dummy', 'Error', 'ID', 'Name', 'Ready' ];
+  var nodes = [ 'Activated', 'Busy', 'Done', 'Dummy', 'Error', 'ID', 'Name',
+      'Ready' ];
   // Add all 5 Parameters
   for (var i = 0; i <= self.NumberOfParameterInputs; i++) {
-    var temp = self.structParameterOutput('ParameterOutput.ParameterOutput' + i + '.');
+    var temp = self.structParameterOutput('ParameterOutput.ParameterOutput' + i
+        + '.');
     temp.forEach(function(item) {
       nodes.push(item);
     });
@@ -657,7 +694,8 @@ module.prototype.structSkillOutput = function(baseNode) {
 module.prototype.structParameterOutput = function(baseNode) {
   var self = this;
 
-  var nodes = [ 'Default', 'Dummy', 'ID', 'MaxValue', 'MinValue', 'Name', 'Required', 'Unit' ];
+  var nodes = [ 'Default', 'Dummy', 'ID', 'MaxValue', 'MinValue', 'Name',
+      'Required', 'Unit' ];
   // Prepend baseNode
   nodes = _.map(nodes, function(item) {
     return baseNode + item;

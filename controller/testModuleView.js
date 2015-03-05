@@ -7,11 +7,11 @@
 exports.completeModule = function(req, res) {
   jadeData = {};
 
-  var moduleInterface = require('./../models/moduleInterface');
+  var moduleInterface = require('./../models/simpleModuleInterface');
   // moduleInterface.setEndpointUrl('opc.tcp://localhost:4334/');
   // moduleInterface.setModule('Module1101');
-  moduleInterface.setEndpointUrl('opc.tcp://192.168.175.230:4840/'); // MI5Simu
-  moduleInterface.setModule('Module2401'); // MI5Simu
+  moduleInterface.setEndpointUrl('opc.tcp://localhost:4840/'); // MI5Simu
+  moduleInterface.setModule('Module1101'); // MI5Simu
 
   moduleInterface.getCompleteModuleData(function(pModuleData) {
     if (pModuleData.module.error == 1) {
@@ -24,13 +24,13 @@ exports.completeModule = function(req, res) {
   });
 };
 
-
 /*
  * deprecated
  */
 // console.log(_.uniqueId(myNodeId));
 exports.index = function(req, res) {
-  var opcuaInstance = require('./../models/opcuaInstance').server('opc.tcp://localhost:4334/');
+  var opcuaInstance = require('./../models/simpleOpcua').server(
+      'opc.tcp://localhost:4334/');
   jadeData = {};
 
   /*
@@ -43,14 +43,15 @@ exports.index = function(req, res) {
     var moduleData = {
       moduleData : {
         name : 'Halloho',
-        skills : [ opcuaInstance.formatNodeValueArrayToSkillContainerArray(data) ]
+        skills : [ opcuaInstance
+            .formatNodeValueArrayToSkillContainerArray(data) ]
       }
     };
     jadeData = _.extend(jadeData, moduleData);
 
     /*
-     * When the array is read, subscribe to all the nodes, that belong to that skill and register
-     * event emitters.
+     * When the array is read, subscribe to all the nodes, that belong to that
+     * skill and register event emitters.
      */
     opcuaInstance.subscribe();
     data.forEach(function(entry) {
