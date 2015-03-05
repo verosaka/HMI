@@ -46,7 +46,7 @@ function sockets(socket) {
   socket.on('bgDebugClearTaskList', function(data) {
     console.log(preLog(), 'clear task list registered');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.116:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.42:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -67,7 +67,7 @@ function sockets(socket) {
   socket.on('bgDebugResetProcessTool', function(data) {
     console.log(preLog(), 'Reset Process Tool event registered');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.117:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.51:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -91,7 +91,7 @@ function sockets(socket) {
   socket.on('bgDebugResetXTS', function(data) {
     console.log(preLog(), 'XTS - Reset XTS - event');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.137:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -115,7 +115,7 @@ function sockets(socket) {
   socket.on('bgDebugMaintenanceTrue', function(data) {
     console.log(preLog(), 'XTS - Maintenance - event true');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.137:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -135,7 +135,7 @@ function sockets(socket) {
   socket.on('bgDebugMaintenanceFalse', function(data) {
     console.log(preLog(), 'XTS - Maintenance - event false');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.137:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -157,7 +157,7 @@ function sockets(socket) {
   socket.on('bgDebugRestartXTS', function(data) {
     console.log(preLog(), 'XTS - Restart XTS - event');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.192.137:4840');
+    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
