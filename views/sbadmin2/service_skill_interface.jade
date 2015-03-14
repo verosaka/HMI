@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    if error
+        h1 ERROR
+        p= error.Error
+        p= error.code
+        p= error.errno
+        p= error.syscal
+    
+    if module
+      div.row
+        div.col-lg-12
+          h1.page-header Service Skills
+           
+      div.row
+        div.col-lg-9
+          div.panel.panel-default 
+            div.panel-heading
+              i.fa.fa-clock-o.fa-fw
+              | Next Task on this Module
+              +feedbackButton("output-module")
+            div.panel-body
+            - module    
+        //- MessageFeed
+        //- div.col-lg-3
+          //- +messageFeed-panel()
+    else
+        div.col-xs-12.well       
+            p No Module is selected, therefore no Service Skills can be shown.
+            p Please select a module from the list below:
+            ul 
+             li Mock
+             li Up
+             li List
+    
+    

@@ -40,8 +40,8 @@ mi5Logger.start();
 //mi5Manual.start(function(){});
 
 // Input Module
-GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
-mi5Input.start(function(){});
+//GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
+//mi5Input.start(function(){});
 
 // Output Module
 //GLOBAL.mi5Output = new require('./models/mi5OutputModule').newOutputModule;
@@ -52,11 +52,10 @@ mi5Input.start(function(){});
 //mi5TaskInterface.start(function(){});
 
 // Camera Module // deactivated for Briefcase Setup
-GLOBAL.mi5Camera = new require('./models/mi5Camera').newMi5Camera;
+//GLOBAL.mi5Camera = new require('./models/mi5Camera').newMi5Camera;
 
 // Message Feed
 //GLOBAL.mMessageFeed = require('./models/simpleMessageFeed');
-
 
 //********************************* HMI Controller and Express *****************************************
 // Background Services

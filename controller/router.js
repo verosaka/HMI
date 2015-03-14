@@ -12,6 +12,8 @@ var maintenanceModule = require('./maintenanceModule');
 var inputModule = require('./inputModule');
 var outputModule = require('./outputModule');
 var camera = require('./camera');
+// Service Skill Interface
+var serviceSkills = require('./serviceSkills');
 
 // Dashboard / Overview
 var overviewCharts = require('./overviewCharts');
@@ -58,6 +60,9 @@ exports.router = function(app) {
 
   // Camera
   app.get('/camera', camera.index);
+
+  // Service Skill Interface
+  app.get('/service', serviceSkills.index)
 
   // Test
   app.post('/testRecipeView', recipes.placeOrder);
