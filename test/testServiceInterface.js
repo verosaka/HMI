@@ -1,44 +1,29 @@
 /**
- * TEST recipeInterface.js
+ * TEST serviceInterface
  * 
  * @author Thomas Frei
- * @date 2014-11-03
+ * @date 2015-03-17
  */
-GLOBAL.CONFIG = require('./../config.js');
 
-/**
- * Node-Module dependencies.
- * https://www.digitalocean.com/community/tutorials/how-to-install-express-a-node-js-framework-and-set-up-socket-io-on-a-vps
- */
-var path = require('path'), express = require('express'), app = express(), http = require('http'), server = http
-    .createServer(app);
+var endpointUrl = 'opc.tcp://localhost:4840/';
+var moduleId = 1101;
 
-GLOBAL.IO = require('socket.io').listen(server);
-GLOBAL._ = require('underscore');
-GLOBAL.md5 = require('MD5');
+var opc = require('./../models/simpleOpcua').server(endpointUrl);
+opc.initialize(function(err) {
+  if (err) {
+    console.log(err);
+    callback(err);
+    return 0;
+  }
+  var baseNodeArr = ['MI5.Module' + moduleId +'.ServiceSkillCount'];
+  opc.mi5ReadArray(baseNodeArr, function(err, data) {
+    console.log(err, data);
 
-var taskInterface = require('./../models/simpleTaskInterface');
+    opc.disconnect();
+    // callback(err, mi5Object);
 
-// Test for all recipes -- first
-// recipeInterface.getAllRecipes(function(recipes) {
-// console.log(recipes);
-// });
+  }); // end opc.mi5ReadArray
+}); // end opc.initialize()
 
-// Test Blank
-// var blankTask = taskInterface.getBlankTask();
-// Test for taskIdArray
-taskInterface.getInputs([ 0, 2 ], function(err, tasks) {
-  console.log(err, tasks);
-  // console.log(JSON.stringify(tasks, null, 1));
-});
 
-// recipeInterface.setQueueUrl('opc.tcp://192.168.175.230:4840/');
-// recipeInterface.whenQueueReady(function() {
-// console.log('QueueReady');
-// });
-//
-// recipeInterface.order(12, [ 40, 20 ], function(err) {
-// console.log('order executed');
-// console.log(err);
-// });
-// console.log(taskInterface._123n(0, 20));
+setTimeout(function(){console.log('terminated')}, 2000);
