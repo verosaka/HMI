@@ -6,6 +6,7 @@
 var jadeH = require('./simpleJadeHelper');
 var opcH = require('./simpleOpcuaHelperModuleInterface');
 var _123n = opcH._123n;
+var assert = require('assert');
 
 // TODO: if number to big, array gets to big, and cannot be read!
 var NumberOfSkillInputs = 2; // 15 max, but only 2 implemented!
@@ -49,6 +50,7 @@ function getInput(callback) {
 
     opc.mi5ReadArray(baseNodeTask, function(err, data) {
       // console.log(err, data);
+      console.log(structInputObjectBlank());
       // Convert opc.Mi5 object to jadeData
       var mi5Object = opcH.mapMi5ArrayToObject(data, structInputObjectBlank());
 

@@ -8,6 +8,9 @@ block content
         p= error.errno
         p= error.syscal
     
+    - console.log('This is a test: logged from jade to node-js console'); // being logged to the node-js console
+    script console.log('Being logged to browser console');
+    
     if module
       div.row
         div.col-lg-12
@@ -21,7 +24,7 @@ block content
               | Next Task on this Module
               +feedbackButton("output-module")
             div.panel-body
-            - module    
+            //- console.log(module);    
         //- MessageFeed
         //- div.col-lg-3
           //- +messageFeed-panel()

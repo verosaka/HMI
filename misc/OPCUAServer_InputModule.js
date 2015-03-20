@@ -282,7 +282,7 @@ function OPCUAServer(portNumber){
           }
       }
     });
-    console.log('Variable ', DisplayName, ' added');
+    //console.log('Variable ', DisplayName, ' added');
     return randomString;
   } 
   
