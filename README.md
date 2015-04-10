@@ -6,7 +6,7 @@ Currently developing the Serviceskill Interface.
 
 ## Installation
 
-1. Download and install [Node.js](http://nodejs.org/download/) (tested with v0.12.0)
+1. Download and install [Node.js](http://nodejs.org/download/) (tested with v0.10.0 - see in the HMI SVN repository hmi/programs for installer)
 2. Download an clone the repository. Make sure you have the 
    [briefcase-branche](https://github.com/ProjectMi5/HMI/tree/briefcase)
 3. In a command line window, browse in the repository and execute
