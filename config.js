@@ -44,12 +44,12 @@ exports.InputPositionOutput = 200;
  * OPCUA Server Configuration for Briefcase Setup
  */
 if (server == 'briefcase'){
-  exports.OPCUARecipe             = 'opc.tcp://192.168.42.42:4840/';
-  exports.OPCUAOrder              = 'opc.tcp://192.168.42.42:4840/';
-  exports.OPCUAMessageFeed        = 'opc.tcp://192.168.42.42:4840/';
-  exports.OPCUATask               = 'opc.tcp://192.168.42.42:4840/';
-  exports.OPCUAHandModule         = 'opc.tcp://192.168.42.42:4840/';
-  exports.OPCUAMaintenanceModule  = 'opc.tcp://192.168.42.42:4840/';
+  exports.OPCUARecipe             = 'opc.tcp://192.168.42.41:4840/';
+  exports.OPCUAOrder              = 'opc.tcp://192.168.42.41:4840/';
+  exports.OPCUAMessageFeed        = 'opc.tcp://192.168.42.41:4840/';
+  exports.OPCUATask               = 'opc.tcp://192.168.42.41:4840/';
+  exports.OPCUAHandModule         = 'opc.tcp://192.168.42.41:4840/';
+  exports.OPCUAMaintenanceModule  = 'opc.tcp://192.168.42.41:4840/';
   exports.OPCUAInputModule        = 'opc.tcp://192.168.42.51:4840/'; // ModuleX
   exports.OPCUAOutputModule       = 'opc.tcp://192.168.42.51:4840/';
   exports.FTPCamera               = '192.168.192.128'; // BR Panel
@@ -59,7 +59,7 @@ if (server == 'briefcase'){
  * OPCUA Test Server-Configuration ITQ Lan
  */
 if (server == 'hmitest'){
-  exports.OPCUARecipe             = 'opc.tcp://192.168.192.80:4840/';
+  exports.OPCUARecipe             = 'opc.tcp://localhost:4334/';
   exports.OPCUAOrder              = 'opc.tcp://192.168.192.80:4840/';
   exports.OPCUAMessageFeed        = 'opc.tcp://192.168.192.80:4840/';
   exports.OPCUATask               = 'opc.tcp://192.168.192.80:4840/';

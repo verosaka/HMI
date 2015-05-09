@@ -1,0 +1,131 @@
+extends layout
+
+block content
+
+  div.row
+    div.col-lg-12
+        h1.page-header Order something!
+        //p You may choose whatever you want!
+        //p Underneath you will find anything we can produce. Please select something.
+        //p If there are too many things, let us surprise you!
+        span.pull-left
+         a.btn.btn-default.btn-lg(href='/order/ifeellucky/',role='button',style="margin-bottom: 20px") 
+           i.fa.fa-magic.fa-lg
+           | I feel lucky!
+  
+  div.col-lg-12(id="carousel-example-generic" class="carousel" data-ride="carousel")
+      ol.carousel-indicators
+        - recipeQuantity = leapVars.siteNumber;
+        - console.log("recipeQuantity: "+recipeQuantity);
+        if recipes
+          -recipeQuantity = 0
+          for recipe in recipes
+            -recipeQuantity++;
+            -console.log("recipeQuantity: "+recipeQuantity);
+        li(data-target="#carousel-example-generic" data-slide-to="0" class="active")
+        -for (var k = 1; k<=recipeQuantity;++k){
+          li(data-target="#carousel-example-generic" data-slide-to="#{k}")
+        -}
+      div.carousel-inner(role="listbox")
+        div(class="item active")
+          img(src= '/assets/images/recipes/recipe/cocktail.jpg')
+          div.carousel-caption Unterschriftif recipes
+        - var i = 0;
+        - console.log("in carouselliste für recipes");
+        if recipes
+         for recipe in recipes
+          if i>0
+            div.item
+              img(src='/assets/images/recipes/recipe'+recipe.RecipeID.value+'/cocktail.jpg')
+              p i recipe.RecipeId.value
+              div.carousel-caption recipe.Name.value #{i}
+          -i++;
+      a(class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev")
+        span(class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="countPrev()")
+        span.sr-only Previous
+      a.class.right.carousel-control(href="#carousel-example-generic" role="button" data-slide="next" onclick="countNext()")
+        span(class="glyphicon glyphicon-chevron-right" aria-hidden="true")
+        span.class.sr-only Next
+      div.row
+        div.col-md-4
+          button.btn.btn-info(onclick="prevSlide()") prev slide
+        div.col-md-4
+          button.btn.btn-info(onclick="orderCocktail()") order
+        div.col-md-4
+          button.btn.btn-info(onclick="nextSlide()") next slide
+  div(id="recipeIds")
+    p hier stehn die recipeIds
+  script.
+    //initializes the carousel
+    $(function(){
+      console.log("in carousel intialisierung");
+      $('.carousel').carousel({
+        interval:0
+      });
+    });
+    var currentRecipeNr = 0;
+    var countNext = function(){
+        currentRecipeNr++;
+        console.log("currentRecipeNr: "+currentRecipeNr);
+    }
+    var countPrev = function(){
+        currentRecipeNr--;
+        console.log("currentRecipeNr: "+currentRecipeNr);
+    }
+    //calls the next slide with pressing a button
+    var nextSlide = function(){
+      console.log("next slide called");
+      $('.carousel').carousel('next');
+      currentRecipeNr++;
+    }
+    var prevSlide = function(){
+      console.log("prev slide called");
+      $('.carousel').carousel('prev');
+      currentRecipeNr--;
+    }
+    var orderCocktail = function(){
+      var recipeIdToPrint = 0;
+      console.log("Cocktail wurde bestellt");
+      if(recipes){
+        var l = 0;
+        for(recipe in recipes){
+           if(l==currentRecipeNr){
+             recipeIdToPrint = recipe.recipeId.value;
+             console.log("recipeIdToPrint");
+           }
+        }
+      }
+            
+    }
+  div.row
+     if recipes
+        - i = 0;
+        - siteNumber = leapVars.siteNumber;
+        - console.log("Variable i = "+i);
+        - console.log("Variable von recipes = " + leapVars.siteNumber);
+        for recipe in recipes
+         - console.log("aktuelles i: "+i);
+         - i = i+1;
+         if i == siteNumber
+          //-console.log("new recipe" + recipe.Name.value);
+          div.col-lg-4.col-md-6.col-sm-6
+            div.panel.panel-primary(style="width:100%, height:100%")
+              a.panel-primary(href="/order/custom/"+recipe.RecipeID.value)
+               div.panel-heading.panel-primary
+                 div.row
+                   div.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-center
+                      img(src="/assets/images/recipes/recipe"+recipe.RecipeID.value+"/cocktail.jpg" style="border-radius: 100%; height:200%; width:200%")
+                   div.col-lg-8.col-md-8.col-sm-8.col-xs-8.text-right(style='padding-right: 5px')
+                     div.row
+                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12 ID: # #{recipe.RecipeID.value}
+                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12
+                          span.pull-right
+                            h5= recipe.Name.value 
+               //a(href="/order/direct/"+recipe.RecipeID.value)
+               //   div.panel-footer
+               //     span.pull-left 1-click order!
+               //     span.pull-right 
+               //       i.fa.fa-arrow-circle-right
+               //     div.clearfix
+     else
+       p no recipe to display
