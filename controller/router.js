@@ -4,7 +4,7 @@
 var testModuleView = require('./testModuleView');
 // Recipes / Order
 var recipes = require('./recipes');
-var recipes = require('./recipesLeap');
+var recipesLeap = require('./recipesLeap');
 // Tasklist
 var tasks = require('./tasks');
 // Modules
@@ -37,10 +37,9 @@ exports.router = function(app) {
   app.get('/order/custom/:recipeId', recipes.customOrder);
   app.post('/order/order/:recipeId', recipes.placeOrder);
 
-
   // LEAP
   app.get('/orderLeap', recipesLeap.index);
-	
+
   // Tasks
   app.get('/tasks', tasks.taskList);
   app.get('/testManualModuleView', manualModule.showModule);
@@ -108,7 +107,6 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     var oldClients = connectedClients;
     connectedClients--;
-    console.log('Number of users from ' + oldClients + ' to '
-        + connectedClients);
+    console.log('Number of users from ' + oldClients + ' to ' + connectedClients);
   });
 });

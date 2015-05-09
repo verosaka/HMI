@@ -26,7 +26,7 @@ process.argv.forEach(function(val, index, array) {
 
 // Default Commandline
 if(!server){
-  server = 'briefcase';
+  server = 'hmitest';
 }
 console.log('Using Server Setup'.bgGreen, server);
 

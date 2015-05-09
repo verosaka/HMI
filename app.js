@@ -32,12 +32,12 @@ GLOBAL.mi5Logger = require('./models/mi5Logger').logger;
 mi5Logger.start();
 
 // Maintenance Module
-//GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;
-//mi5Maintenance.start(function(){});
+GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;
+mi5Maintenance.start(function(){});
 
 //Manual Module
-//GLOBAL.mi5Manual = require('./models/mi5ManualModule').newManualModule;
-//mi5Manual.start(function(){});
+GLOBAL.mi5Manual = require('./models/mi5ManualModule').newManualModule;
+mi5Manual.start(function(){});
 
 // Input Module
 //GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
