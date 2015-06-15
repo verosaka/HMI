@@ -26,11 +26,18 @@ GLOBAL.moment = require('moment');
 // Configuration
 GLOBAL.CONFIG = require('./config.js');
 
-//********************************* Mi5 HMI Models *****************************************
+//********************************* Mi5 Backend Models *****************************************
 // Logger
 GLOBAL.mi5Logger = require('./models/mi5Logger').logger;
 mi5Logger.start();
 
+// Mi5 Cloud Model - MQTT
+GLOBAL.mi5Cloud = require('./models/mi5Cloud').mi5cloud;
+
+// Mi5 Database Model - MongoDB
+GLOBAL.mi5Database = require('./models/mi5Database').mi5database;
+
+//********************************* Mi5 HMI Models *****************************************
 // Maintenance Module
 //GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;
 //mi5Maintenance.start(function(){});

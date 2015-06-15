@@ -3,7 +3,7 @@
  */
 
 function index(req, res) {
-  var jadeData = new Object;
+  var jadeData = {};
   var recipeInterface = require('./../models/simpleRecipeInterface');
 
   // recipeIdArray = [ 0, 1 ];
@@ -42,23 +42,26 @@ function placeOrder(req, res) {
   var order = {
     Pending : true,
     RecipeID : parseInt(recipeId, 10),
-    TaskID : parseInt(taskId, 10),
+    TaskID : parseInt(taskId, 10)
   };
 
   // Parse UserParameters Array
   var userParameters = _handlePostParameters(postParameters);
 
+  // Save the order to the Database
+  mi5Database.saveOrder(taskId, recipeId, userParameters);
+
   // Debug
   console.log('ORDER'.bgBlue, order, userParameters);
 
-  recipeInterface.setOrder(order, userParameters, function(err, callback) {
+  recipeInterface.setOrder(order, userParameters, function(err) {
     if (err) {
       var jadeData = {
-        content : 'Error',
+        content : 'Error'
       };
       res.render('bootstrap/blank', jadeData);
-
     }
+
     var jadeData = {
       content : 'Order has been placed! The corresponding (unique) TaskID is :' + taskId,
       list : [ {
@@ -76,7 +79,7 @@ function placeOrder(req, res) {
 exports.placeOrder = placeOrder;
 
 function _handlePostParameters(postParameters) {
-  var userParameters = new Array;
+  var userParameters = [];
 
   if (postParameters) {
     if (_.isArray(postParameters)) {
@@ -125,7 +128,7 @@ function ifeellucky(req, res) {
       var recipeIds = [];
       recipes.forEach(function(recipe) {
         recipeIds.push(recipe.RecipeID.value);
-      })
+      });
       var luckyId = _.sample(recipeIds);
 
       console.log('getAllRecipes() done - i feel lucky - LuckyRecipeId:', luckyId);
@@ -135,7 +138,7 @@ function ifeellucky(req, res) {
       var order = {
         Pending : true,
         RecipeID : parseInt(luckyId, 10),
-        TaskID : parseInt(taskId, 10),
+        TaskID : parseInt(taskId, 10)
       };
 
       // Parse UserParameters Array
@@ -166,7 +169,7 @@ function directOrder(req, res) {
   var order = {
     Pending : true,
     RecipeID : parseInt(recipeId, 10),
-    TaskID : parseInt(taskId, 10),
+    TaskID : parseInt(taskId, 10)
   };
 
   // Parse UserParameters Array

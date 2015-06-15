@@ -68,6 +68,9 @@ if (server == 'local'){
   exports.OPCUAInputModule        = 'opc.tcp://localhost:4334/'; // ModuleX
   exports.OPCUAOutputModule       = 'opc.tcp://localhost:4334/';
   exports.FTPCamera               = 'localhost'; // BR Panel
+
+  exports.MQTTHost                = 'mqtt://mi5.itq.de';
+  exports.DatabaseHost            = 'mongodb://localhost/mi5';
 }
 
 
