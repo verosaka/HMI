@@ -19,6 +19,9 @@ var serviceSkills = require('./serviceSkills');
 var overviewCharts = require('./overviewCharts');
 var dashboard = require('./dashboard');
 
+// Cocktail-Feedback
+var cocktailFeedback = require('./cocktailFeedback');
+
 /**
  * Routes
  */
@@ -49,6 +52,10 @@ exports.router = function(app) {
   // Overview
   app.get('/overview', overviewCharts.charts);
 
+  // Cocktail-Feedback
+  app.get('/cocktail-feedback', cocktailFeedback.index);
+  app.get('/cocktail-recommendation', cocktailFeedback.recommendation);
+
   // Dashboard
   app.get('/dashboard', dashboard.index);
 
@@ -62,7 +69,7 @@ exports.router = function(app) {
   app.get('/camera', camera.index);
 
   // Service Skill Interface
-  app.get('/service', serviceSkills.index)
+  app.get('/service', serviceSkills.index);
 
   // Test
   app.post('/testRecipeView', recipes.placeOrder);

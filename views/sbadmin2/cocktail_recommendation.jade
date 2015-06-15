@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  div.row
+    h1.page-header Overview of charts
+
+    div.col-lg-12
+      div.panel.panel-default 
+        div.panel-heading
+          h2 
+            | Ordered Recipes
+            span.pull-right
+                +feedbackButton("orderedRecipesDonut")
+        div.panel-body
+          div#orderedRecipesDonut(style="width: 100%")
+          script.
+            Morris.Donut({
+                element: 'orderedRecipesDonut',
+                data: [
+                    { label: 'Cuba Libre', value: 5},
+                    { label: 'Beach Sunday', value: 15},
+                    { label: 'Gin Tonic', value: 8}
+                ]
+            });
+      

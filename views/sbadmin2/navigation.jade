@@ -74,16 +74,6 @@ nav.navbar.navbar-default.navbar-static-top(role='navigation',style='margin-bott
     div.navbar-default.sidebar(role='navigation')
       div.sidebar-nav.navbar-collapse
         ul.nav#side-menu
-          //          li.sidebar-search
-          //            div.input-group.custom-search-form
-          //              input.form-control(type='text',placeholder='Search...')
-          //              span.input-group-btn
-          //                button.btn.btn-default(type='button')
-          //                  i.fa.fa-search 
-          //          li
-          //            a(href='/dashboard')
-          //              i.fa.fa-dashboard.fa-fw 
-          //              | Dashboard
           li
             a(href='/order')
               i.fa.fa-edit.fa-fw
@@ -108,45 +98,54 @@ nav.navbar.navbar-default.navbar-static-top(role='navigation',style='margin-bott
             a(href='/maintenance')
               i.fa.fa-fire-extinguisher.fa-fw
               | Maintenance Module
-          //          li
-          //            a(href='/overview')
-          //              i.fa.fa-bar-chart-o.fa-fw
-          //              | Overview
-          //          li
-          //            a(h='', style='color:#999999')
-          //              i.fa.fa-globe.fa-fw
-          //              | Simulation      
           li
             a(href='camera')
               i.fa.fa-camera.fa-fw
-              | Camera  
+              | Camera
+          li
+            a(href='/overview')
+              i.fa.fa-bar-chart-o.fa-fw
+              | Overview
+
+          li
+            a(href='/cocktail-feedback')
+              i.fa.fa-glass.fa-fw
+              i.fa.fa-share.fa-fw
+              | Cocktail-Feedback
+
+          li
+            a(href='/cocktail-recommendation')
+              i.fa.fa-glass.fa-fw
+              i.fa.fa-reply.fa-fw
+              | Cocktail-Recommendation
+          // // Module - with Dropdown
+          //li
+          //    a(href='#')
+          //      i.fa.fa-sitemap.fa-fw
+          //      | Modules
+          //      span.fa.arrow
+          //        ul.nav.nav-second-level
           //          li
           //            a(href='#')
-          //              i.fa.fa-sitemap.fa-fw
-          //              | Modules
-          //              span.fa.arrow
-          //            ul.nav.nav-second-level
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 1000 - Cookie
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 1100 - Cocktail
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 1200 - Cream
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 1300 - XTS
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 1400 - Manual
-          //              li
-          //                a(href='#')
-          //                  i.fa.fa-link.fa-fw
-          //                  | 2003 - Output
+          //              i.fa.fa-link.fa-fw
+          //              | 1000 - Cookie
+          //          li
+          //            a(href='#')
+          //              i.fa.fa-link.fa-fw
+          //              | 1100 - Cocktail
+          //          li
+          //            a(href='#')
+          //              i.fa.fa-link.fa-fw
+          //              | 1200 - Cream
+          //          li
+          //            a(href='#')
+          //              i.fa.fa-link.fa-fw
+          //              | 1300 - XTS
+          //          li
+          //            a(href='#')
+          //              i.fa.fa-link.fa-fw
+          //              | 1400 - Manual
+          //          li
+          //            a(href='#')
+          //              i.fa.fa-link.fa-fw
+          //              | 2003 - Output
