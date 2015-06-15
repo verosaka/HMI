@@ -9,13 +9,13 @@
  */
 
 // task Id beginning point (random number between 1 and 10000
-exports.TaskId = Math.floor((Math.random() * 1000) + 1); ;
+exports.TaskId = Math.floor((Math.random() * 1000) + 1);
 
 //////////////////////////////////////////////////////////////////////////////
 // Commandline
 var port = undefined;
 var server = undefined;
-process.argv.forEach(function(val, index, array) {
+process.argv.forEach(function(val) {
   if(val.slice(0,6)=='-port='){
     port = val.slice(6);
   }
@@ -26,7 +26,7 @@ process.argv.forEach(function(val, index, array) {
 
 // Default Commandline
 if(!server){
-  server = 'briefcase';
+  server = 'local';
 }
 console.log('Using Server Setup'.bgGreen, server);
 
@@ -56,48 +56,18 @@ if (server == 'briefcase'){
 }
 
 /*
- * OPCUA Test Server-Configuration ITQ Lan
+ * OPCUA Test Server-Configuration local
  */
-if (server == 'hmitest'){
-  exports.OPCUARecipe             = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUAOrder              = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUAMessageFeed        = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUATask               = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUAHandModule         = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUAMaintenanceModule  = 'opc.tcp://192.168.192.80:4840/';
-  exports.OPCUAInputModule        = 'opc.tcp://localhost:4840/'; // ModuleX
-  exports.OPCUAOutputModule       = 'opc.tcp://192.168.192.117:4840/';
-  exports.FTPCamera               = '192.168.192.128'; // BR Panel
-}
-
-/*
- * OPCUA Global Server-Configuration ITQ Lan
- */
-if (server == 'live'){
-  exports.OPCUARecipe           = 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUAOrder            = 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUAMessageFeed      = 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUATask             = 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUAHandModule       = 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUAMaintenanceModule= 'opc.tcp://192.168.192.116:4840/';
-  exports.OPCUAInputModule      = 'opc.tcp://192.168.192.117:4840/'; // ModuleX
-  exports.OPCUAOutputModule     = 'opc.tcp://192.168.192.117:4840/';
-  exports.FTPCamera               = '192.168.192.128'; // BR Panel
-}
-
-/*
- * OPCUA Test Server-Configuration ITQ Lan
- */
-if (server == 'clone'){
-  exports.OPCUARecipe             = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUAOrder              = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUAMessageFeed        = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUATask               = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUAHandModule         = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUAMaintenanceModule  = 'opc.tcp://192.168.192.128:4840/';
-  exports.OPCUAInputModule        = 'opc.tcp://192.168.192.117:4840/'; // ModuleX
-  exports.OPCUAOutputModule       = 'opc.tcp://192.168.192.117:4840/';
-  exports.FTPCamera               = '192.168.192.128'; // BR Panel
+if (server == 'local'){
+  exports.OPCUARecipe             = 'opc.tcp://localhost:4334/';
+  exports.OPCUAOrder              = 'opc.tcp://localhost:4334/';
+  exports.OPCUAMessageFeed        = 'opc.tcp://localhost:4334/';
+  exports.OPCUATask               = 'opc.tcp://localhost:4334/';
+  exports.OPCUAHandModule         = 'opc.tcp://localhost:4334/';
+  exports.OPCUAMaintenanceModule  = 'opc.tcp://localhost:4334/';
+  exports.OPCUAInputModule        = 'opc.tcp://localhost:4334/'; // ModuleX
+  exports.OPCUAOutputModule       = 'opc.tcp://localhost:4334/';
+  exports.FTPCamera               = 'localhost'; // BR Panel
 }
 
 

@@ -2,3 +2,5 @@ node_modules
 .settings
 app.log
 feedback.txt
+config.js
+.idea
