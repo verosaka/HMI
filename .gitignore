@@ -5,3 +5,4 @@ feedback.txt
 config.js
 .idea
 npm-debug.log
+grunt-tests-results.txt

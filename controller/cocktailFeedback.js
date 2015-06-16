@@ -31,7 +31,7 @@ function sendFeedback(req, res){
   var taskId = parseInt(req.params.taskId, 10);
   jadeData.taskId = taskId;
 
-  mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback','TestNachricht - HMI - sendFeedback - TaskId: ' + taskId);
+  mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback', 'TestNachricht - HMI - sendFeedback - TaskId: ' + taskId);
   mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
 
   //mi5Database.saveOrder(taskId, 10051, [1,2,3]);

@@ -14,18 +14,6 @@ mi5cloud = function() {
 exports.mi5cloud = new mi5cloud();
 
 /**
- * Subscribe to a topic
- *
- * TODO: handle the events, give maybe a preselected client.on(topic,message) back
- *
- * @param topic
- */
-mi5cloud.prototype.subscribe = function(topic) {
-  var self = this;
-  self.client.subscribe(topic);
-};
-
-/**
  * Listen to a topic
  *
  * Combination of making a subscription and then listening on the event, specific for one topic
@@ -34,8 +22,16 @@ mi5cloud.prototype.listen = function(topic) {
   var self = this;
   var deferred = Q.defer();
 
-  self.client.on()
-}
+  self.client.subscribe(topic);
+
+  self.client.on('message', function(topic, message){
+    if(self.topic == this.topic){
+      deferred.resolve(message);
+    }
+  });
+
+  return deferred.promise;
+};
 
 /**
  * Publish a message
@@ -45,5 +41,6 @@ mi5cloud.prototype.listen = function(topic) {
  */
 mi5cloud.prototype.publish = function(topic, message){
   var self = this;
+
   self.client.publish(topic, message);
-}
+};
