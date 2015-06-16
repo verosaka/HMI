@@ -17,8 +17,8 @@ var assert = require('assert');
  * @returns
  */
 module = function() {
-  this.NumberOfParameters = 1; // 5 // only works with 2 !!!!!! TODO
-  this.NumberOfSkills = 1; // 50 // only works with 5 !!!!!!!!! TODO
+  this.NumberOfParameters = 1; // 5 // only works with 2 !!!!!!
+  this.NumberOfSkills = 1; // 50 // only works with 5 !!!!!!!!!
   this.NumberOfTasks = 30; // 30 (Production List Size)
 
   this.isInitialized = false;

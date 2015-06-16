@@ -40,7 +40,7 @@ exports.server = function(endPointUrl) {
         async.series([ function(callback) {
           // only create Client, if there is none
           if (true) {
-            // if (typeof opcua.client === 'undefined') { // TODO: if so,
+            // if (typeof opcua.client === 'undefined') {
             // secureChannel handling
             // error
             opcua.client = new nodeopcua.OPCUAClient();
@@ -53,7 +53,7 @@ exports.server = function(endPointUrl) {
         }, function(callback) {
           // Only create session, if there is none
           if (true) {
-            // if (typeof opcua.session === 'undefined') { // TODO:
+            // if (typeof opcua.session === 'undefined') {
             // SessionHandling! if so,
             // secureChannel handling error
             opcua.client.createSession(function(err, session) {

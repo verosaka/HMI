@@ -1,4 +1,5 @@
 var mqtt = require('mqtt');
+var Q = require('q');
 
 /**
  * Initialize class and connect to MQTT
@@ -23,6 +24,18 @@ mi5cloud.prototype.subscribe = function(topic) {
   var self = this;
   self.client.subscribe(topic);
 };
+
+/**
+ * Listen to a topic
+ *
+ * Combination of making a subscription and then listening on the event, specific for one topic
+ */
+mi5cloud.prototype.listen = function(topic) {
+  var self = this;
+  var deferred = Q.defer();
+
+  self.client.on()
+}
 
 /**
  * Publish a message

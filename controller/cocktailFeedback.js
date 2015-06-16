@@ -34,7 +34,8 @@ function sendFeedback(req, res){
   mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback','TestNachricht - HMI - sendFeedback - TaskId: ' + taskId);
   mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
 
-  mi5Database.saveOrder(taskId, 10051, [1,2,3]);
+  //mi5Database.saveOrder(taskId, 10051, [1,2,3]);
+  mi5Database.getOrder(143).then(console.log);
 
   //res.render('sbadmin2/cocktail_feedback_given', jadeData);
   res.end();

@@ -32,7 +32,7 @@ function ServiceConnection(ip, moduleId){
 ServiceConnection.prototype.initialize = function(callback){
   var self = service;
   var endpointUrl = 'opc.tcp://'+service._ip+':4840/';
-  self._opc = require('./../models/simpleOpcua').server(endpointUrl);
+  self._opc = require('./../../models/simpleOpcua').server(endpointUrl);
   self._opc.initialize(function(err) {
     //console.log(endpointUrl, 'initialized');
     callback(err);

@@ -233,7 +233,6 @@ function orderPlaced(req, res) {
     }
 
     // mark the new task
-    // todo
 
     res.render('sbadmin2/ordered_task_list', jadeData);
     res.end();

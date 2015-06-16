@@ -4,3 +4,4 @@ app.log
 feedback.txt
 config.js
 .idea
+npm-debug.log

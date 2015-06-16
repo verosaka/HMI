@@ -12,8 +12,8 @@ var opcH = require('./simpleOpcuaHelper');
 /*
  * Config Production List
  */
-var NumberOfParameters = 1; // 5 // only works with 2 !!!!!! TODO
-var NumberOfSkills = 1; // 50 // only works with 5 !!!!!!!!! TODO
+var NumberOfParameters = 1; // 5 // only works with 2 !!!!!!
+var NumberOfSkills = 1; // 50 // only works with 5 !!!!!!!!!
 var NumberOfTasks = 30; // 30 (Production List Size)
 
 /**

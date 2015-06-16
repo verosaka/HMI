@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "pretest": "jscs .",
-    "test": "mocha"
+    "test": "grunt"
   },
   "dependencies": {
     "MD5": "*",
@@ -27,9 +26,11 @@
     "underscore": "*"
   },
   "devDependencies": {
+    "chai": "^3.0.0",
+    "chai-as-promised": "^5.1.0",
+    "grunt": "^0.4.5",
+    "grunt-mocha-test": "^0.12.7",
     "jscs": "^1.7.3",
-    "mocha": "^2.0.1",
-    "should": "^4.1.0",
-    "supertest": "^0.14.0"
+    "mocha": "^2.2.5"
   }
 }
