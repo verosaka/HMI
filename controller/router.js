@@ -54,7 +54,7 @@ exports.router = function(app) {
 
   // Cocktail-Feedback
   app.get('/cocktail-feedback', cocktailFeedback.index);
-  app.get('/cocktail-feedback-send/:taskId', cocktailFeedback.sendFeedback);
+  app.get('/cocktail-feedback-send/:taskId', cocktailFeedback.send);
   app.get('/cocktail-recommendation', cocktailFeedback.recommendation);
 
   // Dashboard

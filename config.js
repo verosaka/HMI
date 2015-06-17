@@ -53,6 +53,9 @@ if (server == 'briefcase'){
   exports.OPCUAInputModule        = 'opc.tcp://192.168.42.51:4840/'; // ModuleX
   exports.OPCUAOutputModule       = 'opc.tcp://192.168.42.51:4840/';
   exports.FTPCamera               = '192.168.192.128'; // BR Panel
+
+  exports.MQTTHost                = 'mqtt://mi5.itq.de';
+  exports.DatabaseHost            = 'mongodb://localhost/mi5';
 }
 
 /*

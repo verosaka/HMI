@@ -32,14 +32,14 @@ function newOpcuaServer(portNumber){
     server.engine.createFolder("RootFolder",{ browseName: "Recipe"});
     server.engine.createFolder("Recipe",{ browseName: "Recipe[0]"});
     var recipe = 'MI5.Recipe[0]';
-    createMI5Variable(recipe, 'Dummy', 0);
-    createMI5Variable(recipe, 'ID', 1001);
+    createMI5Variable(recipe, 'Dummy', 0, 'Int16');
+    createMI5Variable(recipe, 'ID', 1001, 'Int16');
     createMI5Variable(recipe, 'Name', 'Cuba Libre', 'String');
     createMI5Variable(recipe, 'Description', 'Free Cuba, and enjoy this delicious drink.', 'String');
     server.engine.createFolder("Recipe[0]",{ browseName: "UserParameter"});
     server.engine.createFolder("UserParameter",{ browseName: "UserParameter[0]"});  
     var recipe = 'MI5.Recipe[0].UserParameter[0]';
-    createMI5Variable(recipe, 'Dummy', 0);
+    createMI5Variable(recipe, 'Dummy', 0, 'Int16');
     createMI5Variable(recipe, 'Name', 'Rum', 'String');
     createMI5Variable(recipe, 'Description', 'Original Cuban Rum', 'String');
     createMI5Variable(recipe, 'Unit', 'ml', 'String');
@@ -48,7 +48,7 @@ function newOpcuaServer(portNumber){
     createMI5Variable(recipe, 'MaxValue', 50);
     server.engine.createFolder("UserParameter",{ browseName: "UserParameter[1]"});  
     var recipe = 'MI5.Recipe[0].UserParameter[1]';
-    createMI5Variable(recipe, 'Dummy', 0);
+    createMI5Variable(recipe, 'Dummy', 0, 'Int16');
     createMI5Variable(recipe, 'Name', 'Cola', 'String');
     createMI5Variable(recipe, 'Description', 'Coca Cola', 'String');
     createMI5Variable(recipe, 'Unit', 'ml', 'String');
@@ -58,14 +58,14 @@ function newOpcuaServer(portNumber){
 
     server.engine.createFolder("Recipe",{ browseName: "Recipe[1]"});
     var recipe = 'MI5.Recipe[1]';
-    createMI5Variable(recipe, 'Dummy', 0);
-    createMI5Variable(recipe, 'ID', 1002);
+    createMI5Variable(recipe, 'Dummy', 0, 'Int16');
+    createMI5Variable(recipe, 'ID', 1002, 'Int16');
     createMI5Variable(recipe, 'Name', 'Virgin Pina Colada', 'String');
     createMI5Variable(recipe, 'Description', 'This delicious pina colada is made out of:', 'String');
     server.engine.createFolder("Recipe[1]",{ browseName: "UserParameter"});
     server.engine.createFolder("UserParameter",{ browseName: "UserParameter[0]"});  
     var recipe = 'MI5.Recipe[1].UserParameter[0]';
-    createMI5Variable(recipe, 'Dummy', 0);
+    createMI5Variable(recipe, 'Dummy', 0, 'Int16');
     createMI5Variable(recipe, 'Name', 'Pineapple', 'String');
     createMI5Variable(recipe, 'Description', 'Original Cherry-Water', 'String');
     createMI5Variable(recipe, 'Unit', 'm/s', 'String');

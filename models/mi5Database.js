@@ -1,4 +1,5 @@
 var Q = require('q');
+var _ = require('underscore');
 
 mi5database = function() {
   this.mongoose = require('mongoose-q')();
@@ -15,14 +16,15 @@ mi5database = function() {
 
   // Create the Order-Schemea
   var orderSchema = this.mongoose.Schema({
-    taskId          : [Number]
-    , recipeId      : [Number]
+    taskId          : Number
+    , recipeId      : Number
     , parameters    : [Number]
     , date          : { type: Date, default: Date.now }
   });
   this.Order = this.mongoose.model('Order', orderSchema);
 };
-exports.mi5database = new mi5database();
+var instance = new mi5database(); //TODO see why scope doesn't work when calling it on a promise.then(promise)
+exports.instance = instance;
 
 /**
  * Save an order
@@ -33,7 +35,8 @@ exports.mi5database = new mi5database();
  * @returns Promise
  */
 mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
-  var self = this;
+  var self = instance;
+
   var order = {taskId: taskId,
               recipeId: recipeId,
               parameters: userParameters};
@@ -41,10 +44,52 @@ mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
   var NewOrder = new self.Order(order);
   mi5Logger.info('new order:'+order);
   return NewOrder.saveQ();
-}
+};
 
+/**
+ * Returns a promised-order object
+ * @param taskId
+ * @returns {*|promise}
+ */
 mi5database.prototype.getOrder = function(taskId){
-  var self = this;
+  var self = instance;
+  var deferred = Q.defer();
 
-  return self.Order.findQ({taskId: taskId});
+  self.Order.find({'taskId': taskId}).limit(1).exec(function(err, post){
+    if(err) deferred.reject(err);
+
+    deferred.resolve(post.pop());
+  });
+
+  return deferred.promise;
+};
+
+/**
+ * Returns a promised-order task object
+ *
+ * @returns {*|promise}
+ */
+mi5database.prototype.getLastTaskId = function(){
+  var self = instance;
+  var deferred = Q.defer();
+
+  //var lastTaskId = self.Order.findQ().sort({_id:-1}).limit(1);
+  self.Order.find().sort({'taskId': -1}).limit(1).exec(function(err, post){
+    if(err) deferred.reject(err);
+    if(false ===_.isEmpty(post)){
+      // post[0].taskId == [1456]? -> parse to int
+      var taskId = parseInt(post.pop().taskId,10);
+      deferred.resolve(taskId);
+    } else {
+      deferred.reject('no task has been found');
+    }
+  });
+
+  return deferred.promise;
+};
+
+mi5database.prototype.getLastOrder = function(){
+  var self = instance;
+
+  return self.getLastTaskId().then(self.getOrder);
 }

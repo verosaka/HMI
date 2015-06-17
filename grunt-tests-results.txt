@@ -4,21 +4,11 @@ INFO - Mi5 - Cloud loaded
 INFO - MQTT connected
 
 [0m[0m
-[0m  Database: Mongo Promised[0m
-[2K[0G  [31m  1) Register New Device[0m
-[2K[0G  [31m  2) Get all regIds[0m
+[0m  MQTT - Tests[0m
+[2K[0G  [32m  √[0m[90m should publish a message to a topic[0m[33m (63ms)[0m
+[2K[0G  [32m  √[0m[90m should listen to a topic[0m[33m (57ms)[0m
+[2K[0G  [32m  √[0m[90m should listen to a second topic[0m[33m (60ms)[0m
 
 
-[92m [0m[32m 0 passing[0m[90m (25ms)[0m
-[31m  2 failing[0m
-
-[0m  1) Database: Mongo Promised Register New Device:
-[0m[31m     ReferenceError: database is not defined[0m[90m
-      at Context.<anonymous> (C:\Thomas\Studium\MI5\js\HMI\test\test-mi5Cloud.js:26:9)
-[0m
-[0m  2) Database: Mongo Promised Get all regIds:
-[0m[31m     ReferenceError: database is not defined[0m[90m
-      at Context.<anonymous> (C:\Thomas\Studium\MI5\js\HMI\test\test-mi5Cloud.js:29:9)
-[0m
-
+[92m [0m[32m 3 passing[0m[90m (197ms)[0m
 

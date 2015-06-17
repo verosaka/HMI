@@ -25,22 +25,26 @@ exports.index = index;
  * @param req
  * @param res
  */
-function sendFeedback(req, res){
+function send(req, res){
   var jadeData = {};
 
   var taskId = parseInt(req.params.taskId, 10);
-  jadeData.taskId = taskId;
 
-  mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback', 'TestNachricht - HMI - sendFeedback - TaskId: ' + taskId);
-  mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
+  //mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback', 'TestNachricht - HMI - sendFeedback - TaskId: ' + taskId);
+  //mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
 
-  //mi5Database.saveOrder(taskId, 10051, [1,2,3]);
-  mi5Database.getOrder(143).then(console.log);
+  //mi5Database.saveOrder(taskId, 14051, [43,11,3]);
+  //mi5Database.getOrder(1456).then(console.log);
+  //mi5Database.getLastTaskId().done(console.log);
+  //mi5Database.getLastOrder().done(console.log);
+  //mi5Database.getLastTaskId().then(mi5Database.getOrder).done(console.log);
+  //mi5Database.getLastOrder().done(console.log);
+  //res.send('ok');
 
   //res.render('sbadmin2/cocktail_feedback_given', jadeData);
-  res.end();
+  //res.end();
 }
-exports.sendFeedback = sendFeedback;
+exports.send = send;
 
 /**
  * Show the recommendation from the operator
