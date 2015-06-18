@@ -20,10 +20,11 @@ block content
               div.jumbotron
                 h1
                   | #{order.recipeId}
-                a.btn.btn-primary.btn-lg(href="/cocktail-feedback/send/" + order.taskId, role="button", style="width: 150px")
-                  | Too Sweet
+                p Feedback was sent to the operator.
         div.panel-body
           p Your feedback will be sent to the operator. Please stay put for a recommendation.
+
+
 
 
   //
@@ -96,3 +97,4 @@ block content
                     { label: 'Gin Tonic', value: 8}
                 ]
             });
+      

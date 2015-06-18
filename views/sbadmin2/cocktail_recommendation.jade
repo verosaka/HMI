@@ -3,24 +3,61 @@ extends layout
 block content
 
   div.row
-    h1.page-header Overview of charts
+    h1.page-header Cocktail-Feedback
 
     div.col-lg-12
-      div.panel.panel-default 
+      div.panel.panel-default
         div.panel-heading
-          h2 
-            | Ordered Recipes
-            span.pull-right
-                +feedbackButton("orderedRecipesDonut")
+          div.row
+            div.col-lg-6.col-md-6.text-center
+              img(id="pictureRecipe" + order.recipeId, src="/assets/images/recipes/recipe" + order.recipeId + "/cocktail.jpg", style="border-radius: 100%; horizontal-align: middle; vertical-align: middle; width:70%")
+            div.col-lg-6.col-md-6
+              div.jumbotron
+                h1
+                  | #{order.recipeId}
+                p Operator has sent feedback
         div.panel-body
-          div#orderedRecipesDonut(style="width: 100%")
-          script.
-            Morris.Donut({
-                element: 'orderedRecipesDonut',
-                data: [
-                    { label: 'Cuba Libre', value: 5},
-                    { label: 'Beach Sunday', value: 15},
-                    { label: 'Gin Tonic', value: 8}
-                ]
-            });
-      
+          //p= recommendation
+          div.row
+            div.col-lg-6.col-md-6.text-center
+              h2 Order
+              div#order(style="width: 100%")
+              script.
+                Morris.Donut({
+                  element: 'order',
+                  data: [
+                    {
+                      label: '#{recommendation.order.mixRatio.ingredientName[0]}',
+                      value: #{recommendation.order.mixRatio.ratio[0]}
+                    },
+                    {
+                      label: '#{recommendation.order.mixRatio.ingredientName[1]}',
+                      value: #{recommendation.order.mixRatio.ratio[1]}
+                    },
+                    {
+                      label: '#{recommendation.order.mixRatio.ingredientName[2]}',
+                      value: #{recommendation.order.mixRatio.ratio[2]}
+                    }
+                  ]
+                });
+            div.col-lg-6.col-md-6.text-center
+              h2 Recommendation
+              div#recommendation(style="width: 100%")
+              script.
+                Morris.Donut({
+                   element: 'recommendation',
+                   data: [
+                      {
+                        label: '#{recommendation.recommendation.mixRatio.ingredientName[0]}',
+                        value: #{recommendation.recommendation.mixRatio.ratio[0]}
+                      },
+                      {
+                        label: '#{recommendation.recommendation.mixRatio.ingredientName[1]}',
+                        value: #{recommendation.recommendation.mixRatio.ratio[1]}
+                      },
+                      {
+                        label: '#{recommendation.recommendation.mixRatio.ingredientName[2]}',
+                        value: #{recommendation.recommendation.mixRatio.ratio[2]}
+                      }
+                   ]
+                });
