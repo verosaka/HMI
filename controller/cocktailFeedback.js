@@ -8,6 +8,7 @@ var Q = require('q');
 /**
  * Listen to the recommendations and trigger socket event
  */
+// TODO only listen to one event?!
 mi5Cloud.listen('/mi5/showcase/cocktail/operator/recommendation')
   .then(function(recommendation){
     recommendation = JSON.parse(recommendation);
