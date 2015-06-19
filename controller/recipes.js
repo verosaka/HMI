@@ -49,7 +49,7 @@ function placeOrder(req, res) {
   var userParameters = _handlePostParameters(postParameters);
 
   // Save the order to the Database
-  mi5Database.saveOrder(taskId, recipeId, userParameters);
+  mi5Database.saveOrder(taskId, recipeId, postParameters);
 
   // Debug
   console.log('ORDER'.bgBlue, order, userParameters);
@@ -174,7 +174,6 @@ function directOrder(req, res) {
 
   // Parse UserParameters Array
   var userParameters = [];
-
   // Perform Order
   var recipeInterface = require('./../models/simpleRecipeInterface');
   recipeInterface.setOrder(order, userParameters, function(err, callback) {

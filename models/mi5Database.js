@@ -26,6 +26,11 @@ mi5database = function() {
 var instance = new mi5database(); //TODO see why scope doesn't work when calling it on a promise.then(promise)
 exports.instance = instance;
 
+// Get the last task ID
+instance.getLastTaskId().then(function(taskId){
+  CONFIG.TaskId = taskId;
+});
+
 /**
  * Save an order
  *
