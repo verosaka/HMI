@@ -36,6 +36,10 @@ GLOBAL.mi5Cloud = require('./models/mi5Cloud').mi5cloud;
 
 // Mi5 Database Model - MongoDB
 GLOBAL.mi5Database = require('./models/mi5Database').instance;
+mi5Database.getLastTaskId().then(function(taskId){
+  CONFIG.TaskId = taskId;
+  console.log('current taskId: ', CONFIG.TaskId);
+});
 
 //********************************* Mi5 HMI Models *****************************************
 // Maintenance Module

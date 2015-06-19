@@ -8,7 +8,7 @@
  * @date 2014-10-10
  */
 
-// task Id beginning point (random number between 1 and 10000
+// will be overwritten by mongodb
 exports.TaskId = Math.floor((Math.random() * 1000) + 1);
 
 //////////////////////////////////////////////////////////////////////////////
