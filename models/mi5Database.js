@@ -22,6 +22,17 @@ mi5database = function() {
     , date          : { type: Date, default: Date.now }
   });
   this.Order = this.mongoose.model('Order', orderSchema);
+
+  var recommendationSchema = this.mongoose.Schema({
+    productId: Number,
+    timestamp: Date,
+    recipe: this.mongoose.Schema.Types.Mixed,
+    order: this.mongoose.Schema.Types.Mixed,
+    review: this.mongoose.Schema.Types.Mixed,
+    recommendation: this.mongoose.Schema.Types.Mixed
+  });
+  this.Recommendation = this.mongoose.model('Recommendation', recommendationSchema);
+
 };
 var instance = new mi5database(); //TODO see why scope doesn't work when calling it on a promise.then(promise)
 exports.instance = instance;
@@ -45,6 +56,27 @@ mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
   mi5Logger.info('new order:'+order);
   return NewOrder.saveQ();
 };
+
+mi5database.prototype.saveRecommendation = function(recommendation){
+  var self = instance;
+
+  var NewRecommendation = new self.Recommendation(recommendation);
+  mi5Logger.info('new recommendation saved:'+recommendation);
+  return NewRecommendation.saveQ();
+}
+
+mi5database.prototype.getRecommendation = function(taskId){
+  var self = instance;
+  var deferred = Q.defer();
+
+  self.Recommendation.find({'productId': taskId}).limit(1).exec(function(err, post){
+    if(err) deferred.reject(err);
+
+    deferred.resolve(post.pop());
+  });
+
+  return deferred.promise;
+}
 
 /**
  * Returns a promised-order object

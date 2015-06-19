@@ -10,11 +10,11 @@ block content
         div.panel-heading
           div.row
             div.col-lg-6.col-md-6.text-center
-              img(id="pictureRecipe" + order.recipeId, src="/assets/images/recipes/recipe" + order.recipeId + "/cocktail.jpg", style="border-radius: 100%; horizontal-align: middle; vertical-align: middle; width:70%")
+              img(id="pictureRecipe" + recommendation.recipe.id, src="/assets/images/recipes/recipe" + recommendation.recipe.id + "/cocktail.jpg", style="border-radius: 100%; horizontal-align: middle; vertical-align: middle; width:70%")
             div.col-lg-6.col-md-6
               div.jumbotron
                 h1
-                  | #{order.recipeId}
+                  | #{recommendation.recipe.id}
                 p Operator has sent feedback
         div.panel-body
           //p= recommendation

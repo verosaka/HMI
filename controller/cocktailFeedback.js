@@ -4,14 +4,32 @@
  * @author Thomas Frei
  * @date 2015-06-15
  */
-
+var Q = require('q');
 /**
  * Listen to the recommendations and trigger socket event
  */
 mi5Cloud.listen('/mi5/showcase/cocktail/operator/recommendation')
   .then(function(recommendation){
     recommendation = JSON.parse(recommendation);
-    console.log(recommendation.order.mixRatio.ratio);
+    console.log(recommendation);
+
+    var deferred = Q.defer();
+    deferred.resolve(recommendation);
+    return deferred.promise;
+  })
+  .then(mi5Database.saveRecommendation)
+  //.then(mi5Database.getLastTaskId)
+  //.then(function(recommendation){
+  //  var deferred = Q.defer();
+  //  deferred.resolve(2007);
+  //  return deferred.promise;
+  //})
+  //.then(mi5Database.getRecommendation)
+  //.then(function(re){
+  //  console.log(re);
+  //})
+  .then(function(){
+    console.log('wait');
   })
   .fail(console.log);
 
@@ -64,9 +82,12 @@ function send(req, res){
       mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback', feedback);
       mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
 
-
-      res.render('sbadmin2/cocktail_feedback_given', jadeData);
-      res.end();
+      try {
+        res.render('sbadmin2/cocktail_feedback_given', jadeData);
+        res.end();
+      } catch(err){
+        throw err;
+      }
     })
     .catch(function (e) {
       console.error(e);
@@ -84,6 +105,12 @@ function send(req, res){
 }
 exports.send = send;
 
+function consoleLogQ(mix){
+  var deferred = Q.defer();
+  deferred.resolve(mix);
+  console.log('PromiseChain:',mix);
+  return deferred.promise;
+}
 /**
  * Show the recommendation from the operator
  *
@@ -94,20 +121,22 @@ function recommendation(req, res) {
   var jadeData = {};
 
   // TODO get the recommendation
-  mi5Database.getLastOrder()
-    .then(function(order){
-      jadeData.order = order;
-
-      jadeData.recommendation = parseRecommendation('');
+  mi5Database.getLastTaskId()
+    .then(consoleLogQ)
+    .then(mi5Database.getRecommendation)
+    .then(consoleLogQ)
+    .then(function(recommendation){
+      if(typeof recommendation == 'undefined') throw 'no recommendation found';
+      jadeData.recommendation = recommendation;
+      console.log(recommendation);
 
       res.render('sbadmin2/cocktail_recommendation', jadeData);
       res.end();
     })
     .catch(function (e) {
       console.error(e);
-      res.status(500, {
-        error: e
-      });
+      res.send(e);
+      res.end();
     });
 }
 exports.recommendation = recommendation;
