@@ -53,15 +53,17 @@ function send(req, res){
   var taskId = parseInt(req.params.taskId, 10);
 
   // generate a dummy order
-  //mi5Database.saveOrder(1501, 10051, [200,11,34, 42]);
+  //mi5Database.saveOrder(1501, 10051, [200 ,11,34, 42]);
 
   mi5Database.getOrder(taskId)
     .then(function(order){
       var feedback = JSON.stringify(parseFeedback(order));
+      console.log(feedback);
       jadeData.feedback = feedback;
       jadeData.order = order;
       mi5Cloud.publish('/mi5/showcase/cocktail/user/feedback', feedback);
       mi5Logger.info('mi5MQTT - published feedback for taskId: ' + taskId);
+
 
       res.render('sbadmin2/cocktail_feedback_given', jadeData);
       res.end();
@@ -149,11 +151,22 @@ function parseFeedback(order){
   }
 
   // TODO make the parameters dynamic
-  template.order.amount = order.parameters[0];
-  template.order.mixRatio.ratio[0] = order.parameters[1];
-  template.order.mixRatio.ratio[1] = order.parameters[2];
-  //template.order.ratio[2] = order.parameters[3];
+  template.order.amount = order.parameters.shift();
+
+  // Calculate percentage according to mixRatio
+  var ratioSum = order.parameters.reduce(sum);
+  console.log('SUM:',ratioSum);
+  order.parameters.forEach(function(val, key){
+    template.order.mixRatio.ratio[key] = val/ratioSum;
+  });
+  //template.order.mixRatio.ratio[0] = order.parameters[1];
+  //template.order.mixRatio.ratio[1] = order.parameters[2];
+  //template.order.mixRatio.ratio[2] = order.parameters[3];
   return template;
+}
+
+function sum(a,b){
+  return parseInt(a,10)+parseInt(b,10);
 }
 
 function parseRecommendation(recommendation){
@@ -184,3 +197,22 @@ function parseRecommendation(recommendation){
   };
   return template;
 }
+
+/*
+var realOrder={
+  "productId":2004,
+  "timestamp":"2015-05-01T14:02:05",
+  "recipe":{
+    "id":10051,
+    "name":"Free Passion"
+  },
+  "order":{
+    "amount":56,
+    "mixRatio": {
+      "ingredientName":["Orange","Passion Fruit","Grenadine Syrup"],
+      "ratio":[0.6043956043956044,0.10622710622710622,0.2893772893772894]}
+  },
+  "review":{
+    "like":false,"feedback":"Too sweet"}
+};
+*/
