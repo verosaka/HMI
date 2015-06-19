@@ -149,14 +149,18 @@ function parseFeedback(order){
   } else {
     template.recipe.name = 'Recipelist';
   }
-  
+
   template.order.amount = order.parameters.shift();
 
+  // Free Passion: 10051 default:
+  var defaultRatio = [50,35,10];
   // Calculate percentage according to mixRatio
   var ratioSum = order.parameters.reduce(sum);
+  var defaultRatioSum = defaultRatio.reduce(sum);
   console.log('SUM:',ratioSum);
   order.parameters.forEach(function(val, key){
-    template.order.mixRatio.ratio[key] = val/ratioSum;
+    template.order.mixRatio.ratio[key] = val * defaultRatio[key]
+                                        / ( defaultRatioSum * ratioSum);
   });
   //template.order.mixRatio.ratio[0] = order.parameters[1];
   //template.order.mixRatio.ratio[1] = order.parameters[2];
