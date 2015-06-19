@@ -155,13 +155,17 @@ function parseFeedback(order){
   // Free Passion: 10051 default:
   var defaultRatio = [50,35,10];
   // Calculate percentage according to mixRatio
-  var ratioSum = order.parameters.reduce(sum);
-  var defaultRatioSum = defaultRatio.reduce(sum);
-  console.log('SUM:',ratioSum);
+  console.log(order.parameters);
   order.parameters.forEach(function(val, key){
-    template.order.mixRatio.ratio[key] = val * defaultRatio[key]
-                                        / ( defaultRatioSum * ratioSum);
+    template.order.mixRatio.ratio[key] = val * defaultRatio[key];
   });
+  var sumRatio = template.order.mixRatio.ratio.reduce(sum);
+  console.log( template.order.mixRatio.ratio);
+  // Calculate it to ratio in percent of 1
+  template.order.mixRatio.ratio.forEach(function(val, key){
+    template.order.mixRatio.ratio[key] = Math.floor((val / sumRatio)*100)/100; // TODO might be 1 - 0.03 (3x floor)
+  });
+  console.log(template.order.mixRatio.ratio);
   //template.order.mixRatio.ratio[0] = order.parameters[1];
   //template.order.mixRatio.ratio[1] = order.parameters[2];
   //template.order.mixRatio.ratio[2] = order.parameters[3];
