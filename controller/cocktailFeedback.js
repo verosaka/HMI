@@ -149,8 +149,7 @@ function parseFeedback(order){
   } else {
     template.recipe.name = 'Recipelist';
   }
-
-  // TODO make the parameters dynamic
+  
   template.order.amount = order.parameters.shift();
 
   // Calculate percentage according to mixRatio
