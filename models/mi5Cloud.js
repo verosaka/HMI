@@ -25,6 +25,7 @@ mi5cloud.prototype.listenCB = function(topic, cb) {
 
   self.client.on('message', function(topic, message){
     if(self.topic == this.topic){ //this is the topic from the cb event function
+      message = JSON.parse(message); //message is buffer when coming from mqtt
       cb(message);
     }
   });

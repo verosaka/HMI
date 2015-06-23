@@ -9,9 +9,7 @@ var Q = require('q');
  * Listen to the recommendations and trigger socket event
  */
 mi5Cloud.listenCB('/mi5/showcase/cocktail/operator/recommendation', function(recommendation){
-  recommendation = JSON.parse(recommendation);
   console.log('recommendation caught: ', recommendation);
-
   mi5Database.saveRecommendation(recommendation).fail(console.log);
 });
 
