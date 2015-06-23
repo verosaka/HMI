@@ -14,23 +14,20 @@ mi5cloud = function() {
 exports.mi5cloud = new mi5cloud();
 
 /**
- * Listen to a topic
+ * Listen to a topic using a cb function
  *
- * Combination of making a subscription and then listening on the event, specific for one topic
+ * @param topic
+ * @param cb(message)
  */
-mi5cloud.prototype.listen = function(topic) {
+mi5cloud.prototype.listenCB = function(topic, cb) {
   var self = this;
-  var deferred = Q.defer();
-
   self.client.subscribe(topic);
 
   self.client.on('message', function(topic, message){
-    if(self.topic == this.topic){
-      deferred.resolve(message);
+    if(self.topic == this.topic){ //this is the topic from the cb event function
+      cb(message);
     }
   });
-
-  return deferred.promise;
 };
 
 /**

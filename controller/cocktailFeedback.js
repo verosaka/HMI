@@ -8,31 +8,12 @@ var Q = require('q');
 /**
  * Listen to the recommendations and trigger socket event
  */
-// TODO only listen to one event?!
-mi5Cloud.listen('/mi5/showcase/cocktail/operator/recommendation')
-  .then(function(recommendation){
-    recommendation = JSON.parse(recommendation);
-    console.log(recommendation);
+mi5Cloud.listenCB('/mi5/showcase/cocktail/operator/recommendation', function(recommendation){
+  recommendation = JSON.parse(recommendation);
+  console.log('recommendation caught: ', recommendation);
 
-    var deferred = Q.defer();
-    deferred.resolve(recommendation);
-    return deferred.promise;
-  })
-  .then(mi5Database.saveRecommendation)
-  //.then(mi5Database.getLastTaskId)
-  //.then(function(recommendation){
-  //  var deferred = Q.defer();
-  //  deferred.resolve(2007);
-  //  return deferred.promise;
-  //})
-  //.then(mi5Database.getRecommendation)
-  //.then(function(re){
-  //  console.log(re);
-  //})
-  .then(function(){
-    console.log('wait');
-  })
-  .fail(console.log);
+  mi5Database.saveRecommendation(recommendation).fail(console.log);
+});
 
 /**
  * Show Feedback GUI for the last cocktail
@@ -206,6 +187,7 @@ function sum(a,b){
   return parseInt(a,10)+parseInt(b,10);
 }
 
+/*
 function parseRecommendation(recommendation){
   var template = {
     "productId": 223,
@@ -235,7 +217,6 @@ function parseRecommendation(recommendation){
   return template;
 }
 
-/*
 var realOrder={
   "productId":2004,
   "timestamp":"2015-05-01T14:02:05",
