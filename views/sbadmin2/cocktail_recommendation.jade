@@ -2,6 +2,11 @@ extends layout
 
 block content
 
+  include mixins/fixMorrisDonut
+  +fixMorrisDonut()
+  include mixins/cocktailColors
+  +cocktailColors()
+
   div.row
     h1.page-header Cocktail-Feedback
 
@@ -39,7 +44,9 @@ block content
                       value: #{recommendation.order.mixRatio.ratio[2]}
                     }
                   ],
-                  colors: ['#F9D423', '#E89505', '#A23138']
+                  colors: [getColorForIngredient('#{recommendation.order.mixRatio.ingredientName[0]}'),
+                    getColorForIngredient('#{recommendation.order.mixRatio.ingredientName[1]}'),
+                    getColorForIngredient('#{recommendation.order.mixRatio.ingredientName[2]}')]
                 });
             div.col-lg-6.col-md-6.text-center
               h2 Recommendation
@@ -61,5 +68,8 @@ block content
                         value: #{recommendation.recommendation.mixRatio.ratio[2]}
                       }
                    ],
-                  colors: ['#F9D423', '#E89505', '#A23138']
+                  colors: [getColorForIngredient('#{recommendation.recommendation.mixRatio.ingredientName[0]}'),
+                    getColorForIngredient('#{recommendation.recommendation.mixRatio.ingredientName[1]}'),
+                    getColorForIngredient('#{recommendation.recommendation.mixRatio.ingredientName[2]}')]
                 });
+
