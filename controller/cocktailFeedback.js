@@ -100,7 +100,6 @@ function consoleLogQ(mix){
 function recommendation(req, res) {
   var jadeData = {};
 
-  // TODO get the recommendation
   mi5Database.getLastTaskId()
     .then(consoleLogQ)
     .then(mi5Database.getRecommendation)
@@ -128,7 +127,6 @@ exports.recommendation = recommendation;
 
 
 
-
 function parseFeedback(order){
   var template = {
     "productId": 0, // overwrite with taskId
@@ -138,15 +136,15 @@ function parseFeedback(order){
       "name": "" // overwrite with recipe name from recipe database
     },
     "order": {
-      "amount": 127, // overwrite with userparameter[0]
+      "amount": 0, // overwrite with userparameter[0]
       "mixRatio": {
         "ingredientName": ["Orange", "Passion Fruit", "Grenadine Syrup"],
-        "ratio": [0.4, 0.5, 0.1] // overwrite with userparameter[1,2,3]
+        "ratio": [0, 0, 0] // overwrite with userparameter[1,2,3]
       }
     },
     "review": {
       "like": false,
-      "feedback": "Too sweet" // overwrite
+      "feedback": "" // overwrite
     }
   };
 
@@ -161,7 +159,7 @@ function parseFeedback(order){
 
   template.order.amount = order.parameters.shift();
 
-  // Free Passion: 10051 default:
+  // Free Passion: 10051 default: // TODO get the default ratios from a database
   var defaultRatio = [50,35,10];
   // Calculate percentage according to mixRatio
   console.log(order.parameters);
@@ -175,9 +173,20 @@ function parseFeedback(order){
     template.order.mixRatio.ratio[key] = Math.floor((val / sumRatio)*100)/100; // TODO might be 1 - 0.03 (3x floor)
   });
   console.log(template.order.mixRatio.ratio);
-  //template.order.mixRatio.ratio[0] = order.parameters[1];
-  //template.order.mixRatio.ratio[1] = order.parameters[2];
-  //template.order.mixRatio.ratio[2] = order.parameters[3];
+
+  // Order the ingredients smallest first (donut charts best practice) ------------------------------------------
+  // generate sortable array: {ingredient: 'orange', ratio: 0.4},{ingredient: 'passion fruit', ratio: 0.2}...
+  var ingredients = [];
+  template.order.mixRatio.ingredientName.forEach(function(val,key){
+    ingredients.push({ingredient: val, ratio: template.order.mixRatio.ratio[key]});
+  });
+  ingredients = _.sortBy(ingredients, 'ratio');
+  // copy it back to the template
+  ingredients.forEach(function(val,key){
+    template.order.mixRatio.ingredientName[key] = val.ingredient;
+    template.order.mixRatio.ratio[key] = val.ratio;
+  });
+
   return template;
 }
 

@@ -19,7 +19,9 @@ block content
             div.col-lg-6.col-md-6
               div.jumbotron
                 h1
-                  | #{order.recipeId}
+                  //| #{order.recipeId}
+                  // TODO make it generic - maybe a recipe database to query for the recipe id
+                  | Free Passion
                 a.btn.btn-primary.btn-lg(href="/cocktail-feedback/send/" + order.taskId, role="button", style="width: 150px")
                   | Too Sweet
         div.panel-body
