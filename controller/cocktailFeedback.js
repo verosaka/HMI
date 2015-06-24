@@ -144,7 +144,7 @@ function parseFeedback(order){
     },
     "review": {
       "like": false,
-      "feedback": "" // overwrite
+      "feedback": "Too sweet" // future overwrite
     }
   };
 
