@@ -31,7 +31,7 @@ module = function() {
   this.jadeData = {};
 
   this.socketRoom = 'input-module';
-  this.ModuleId = 1101;
+  this.ModuleId = 2501;
   this.SkillID = 1402;
   this.PositionOutput = 1345;
   this.ModuleName = 'Input Module';
