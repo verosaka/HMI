@@ -19,7 +19,7 @@ exports.mi5cloud = new mi5cloud();
  * @param topic
  * @param cb(message)
  */
-mi5cloud.prototype.listenCB = function(topic, cb) {
+mi5cloud.prototype.listen = function(topic, cb) {
   var self = this;
   self.client.subscribe(topic);
 

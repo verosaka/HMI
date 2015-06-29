@@ -34,7 +34,7 @@ mi5database = function() {
   this.Recommendation = this.mongoose.model('Recommendation', recommendationSchema);
 
 };
-var instance = new mi5database(); //TODO see why scope doesn't work when calling it on a promise.then(promise)
+var instance = new mi5database();
 exports.instance = instance;
 
 /**
@@ -63,7 +63,7 @@ mi5database.prototype.saveRecommendation = function(recommendation){
   var NewRecommendation = new self.Recommendation(recommendation);
   mi5Logger.info('new recommendation saved:'+recommendation);
   return NewRecommendation.saveQ();
-}
+};
 
 mi5database.prototype.getRecommendation = function(taskId){
   var self = instance;
@@ -76,7 +76,7 @@ mi5database.prototype.getRecommendation = function(taskId){
   });
 
   return deferred.promise;
-}
+};
 
 /**
  * Returns a promised-order object
@@ -108,7 +108,7 @@ mi5database.prototype.getLastTaskId = function(){
   //var lastTaskId = self.Order.findQ().sort({_id:-1}).limit(1);
   self.Order.find().sort({'taskId': -1}).limit(1).exec(function(err, post){
     if(err) deferred.reject(err);
-    if(false ===_.isEmpty(post)){
+    if(false === _.isEmpty(post)){
       // post[0].taskId == [1456]? -> parse to int
       var taskId = parseInt(post.pop().taskId,10);
       deferred.resolve(taskId);
@@ -124,4 +124,29 @@ mi5database.prototype.getLastOrder = function(){
   var self = instance;
 
   return self.getLastTaskId().then(self.getOrder);
-}
+};
+
+mi5database.prototype.getLastRecommendationId = function(){
+  var self = instance;
+  var deferred = Q.defer();
+
+  //var lastTaskId = self.Order.findQ().sort({_id:-1}).limit(1);
+  self.Recommendation.find().sort({'productId': -1}).limit(1).exec(function(err, post){
+    if(err) deferred.reject(err);
+    if(false === _.isEmpty(post)){
+      // post[0].taskId == [1456]? -> pop -> parse to int
+      var productId = parseInt(post.pop().productId,10);
+      deferred.resolve(productId);
+    } else {
+      deferred.reject('no task has been found');
+    }
+  });
+
+  return deferred.promise;
+};
+
+mi5database.prototype.getLastRecommendation = function(){
+  var self = instance;
+
+  return self.getLastRecommendationId().then(self.getRecommendation);
+};

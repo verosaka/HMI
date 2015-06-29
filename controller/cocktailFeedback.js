@@ -8,9 +8,10 @@ var Q = require('q');
 /**
  * Listen to the recommendations and trigger socket event
  */
-mi5Cloud.listenCB('/mi5/showcase/cocktail/operator/recommendation', function(recommendation){
+mi5Cloud.listen('/mi5/showcase/cocktail/operator/recommendation', function(recommendation){
   console.log('recommendation caught: ', recommendation);
   mi5Database.saveRecommendation(recommendation).fail(console.log);
+  IO.emit('cocktail-recommendation', recommendation);
 });
 
 /**
@@ -91,6 +92,7 @@ function consoleLogQ(mix){
   console.log('PromiseChain:',mix);
   return deferred.promise;
 }
+
 /**
  * Show the recommendation from the operator
  *
@@ -100,7 +102,7 @@ function consoleLogQ(mix){
 function recommendation(req, res) {
   var jadeData = {};
 
-  mi5Database.getLastTaskId()
+  mi5Database.getLastRecommendationId()
     .then(consoleLogQ)
     .then(mi5Database.getRecommendation)
     .then(consoleLogQ)
@@ -168,9 +170,10 @@ function parseFeedback(order){
   });
   var sumRatio = template.order.mixRatio.ratio.reduce(sum);
   console.log( template.order.mixRatio.ratio);
-  // Calculate it to ratio in percent of 1
+
+  // Calculate with accuracy of 10^6
   template.order.mixRatio.ratio.forEach(function(val, key){
-    template.order.mixRatio.ratio[key] = Math.floor((val / sumRatio)*100)/100; // TODO might be 1 - 0.03 (3x floor)
+    template.order.mixRatio.ratio[key] = Math.round((val / sumRatio)*10^6)/10^6;
   });
   console.log(template.order.mixRatio.ratio);
 
@@ -181,6 +184,7 @@ function parseFeedback(order){
     ingredients.push({ingredient: val, ratio: template.order.mixRatio.ratio[key]});
   });
   ingredients = _.sortBy(ingredients, 'ratio');
+
   // copy it back to the template
   ingredients.forEach(function(val,key){
     template.order.mixRatio.ingredientName[key] = val.ingredient;

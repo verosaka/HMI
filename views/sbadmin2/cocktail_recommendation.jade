@@ -29,20 +29,21 @@ block content
               h2 Order
               div#order(style="width: 100%")
               script.
+                // Rounded for two decimal numbers - floor (abrunden)
                 Morris.Donut({
                   element: 'order',
                   data: [
                     {
                       label: '#{recommendation.order.mixRatio.ingredientName[0]}',
-                      value: #{recommendation.order.mixRatio.ratio[0]}
+                      value: Math.round(#{recommendation.order.mixRatio.ratio[0]}*100)/100
                     },
                     {
                       label: '#{recommendation.order.mixRatio.ingredientName[1]}',
-                      value: #{recommendation.order.mixRatio.ratio[1]}
+                      value: Math.round(#{recommendation.order.mixRatio.ratio[1]}*100)/100
                     },
                     {
                       label: '#{recommendation.order.mixRatio.ingredientName[2]}',
-                      value: #{recommendation.order.mixRatio.ratio[2]}
+                      value: Math.round(#{recommendation.order.mixRatio.ratio[2]}*100)/100
                     }
                   ],
                   colors: [getColorForIngredient('#{recommendation.order.mixRatio.ingredientName[0]}'),
@@ -53,20 +54,21 @@ block content
               h2 Recommendation
               div#recommendation(style="width: 100%")
               script.
+                // Rounded for two decimal numbers - floor (abrunden)
                 Morris.Donut({
                    element: 'recommendation',
                    data: [
                       {
                         label: '#{recommendation.recommendation.mixRatio.ingredientName[0]}',
-                        value: #{recommendation.recommendation.mixRatio.ratio[0]}
+                        value: Math.round(#{recommendation.recommendation.mixRatio.ratio[0]}*100)/100
                       },
                       {
                         label: '#{recommendation.recommendation.mixRatio.ingredientName[1]}',
-                        value: #{recommendation.recommendation.mixRatio.ratio[1]}
+                        value: Math.round(#{recommendation.recommendation.mixRatio.ratio[1]}*100)/100
                       },
                       {
                         label: '#{recommendation.recommendation.mixRatio.ingredientName[2]}',
-                        value: #{recommendation.recommendation.mixRatio.ratio[2]}
+                        value: Math.round(#{recommendation.recommendation.mixRatio.ratio[2]}*100)/100
                       }
                    ],
                   colors: [getColorForIngredient('#{recommendation.recommendation.mixRatio.ingredientName[0]}'),

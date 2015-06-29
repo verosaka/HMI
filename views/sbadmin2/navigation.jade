@@ -41,6 +41,19 @@ nav.navbar.navbar-default.navbar-static-top(role='navigation',style='margin-bott
               }
             });
       li
+        a(href='/cocktail-feedback/recommendation', style='color:#999999')
+          i.fa.fa-glass.fa-fw
+          span#cocktailRecommendation
+          script.
+            socket.on("cocktail-recommendation", function (data) {
+              -console.log('JADE: cocktail-recommendation received');
+              if (data === false) {
+                $("#cocktailRecommendation").removeClass("badge-top alert-danger").html("");
+              } else if (data === true) {
+                $("#cocktailRecommendation").addClass("badge-top alert-danger").hctml('<i class="fa fa-map-marker fa-fw"></i>');
+              }
+            });
+      li
         a(href='/manual', style='color:#999999')
           i.fa.fa-gavel.fa-fw
           span#manualBadge
