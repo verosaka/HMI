@@ -41,6 +41,9 @@ mi5Database.getLastTaskId().then(function(taskId){
   console.log('current taskId: ', CONFIG.TaskId);
 });
 
+// Mi5 Database Model - MongoDB
+GLOBAL.mi5Startup = require('./models/mi5Startup').instance;
+
 //********************************* Mi5 HMI Models *****************************************
 // Maintenance Module
 //GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;

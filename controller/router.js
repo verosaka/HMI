@@ -22,6 +22,9 @@ var dashboard = require('./dashboard');
 // Cocktail-Feedback
 var cocktailFeedback = require('./cocktailFeedback');
 
+// Startup
+var startup = require('./startup');
+
 /**
  * Routes
  */
@@ -71,6 +74,9 @@ exports.router = function(app) {
 
   // Service Skill Interface
   app.get('/service', serviceSkills.index);
+
+  // Startup Interface
+  app.get('/startup', startup.index);
 
   // Test
   app.post('/testRecipeView', recipes.placeOrder);

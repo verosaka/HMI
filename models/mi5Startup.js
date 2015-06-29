@@ -7,7 +7,7 @@ var Q = require('q');
 mi5startup = function() {
   mi5Logger.info('Mi5 - Startup loaded');
 };
-var instance = new mi5database();
+var instance = new mi5startup();
 exports.instance = instance;
 
 /**
@@ -28,7 +28,7 @@ mi5startup.prototype.createPromise = function() {
   return deferred.promise;
 };
 
-mi5startup.prototype.VirtualBoxStart(name){
+mi5startup.prototype.VirtualBoxStart = function(name){
   var self = instance;
   var deferred = Q.defer();
 
@@ -38,9 +38,9 @@ mi5startup.prototype.VirtualBoxStart(name){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.MongoDBStart(mongodbpath){
+mi5startup.prototype.MongoDBStart = function(mongodbpath){
   var self = instance;
   var deferred = Q.defer();
 
@@ -50,9 +50,9 @@ mi5startup.prototype.MongoDBStart(mongodbpath){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.ProcessToolStart(){
+mi5startup.prototype.ProcessToolStart = function(){
   var self = instance;
   var deferred = Q.defer();
 
@@ -62,9 +62,9 @@ mi5startup.prototype.ProcessToolStart(){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.ProcessToolConfigure(config){
+mi5startup.prototype.ProcessToolConfigure = function(config){
   var self = instance;
   var deferred = Q.defer();
 
@@ -75,9 +75,9 @@ mi5startup.prototype.ProcessToolConfigure(config){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.TestRunStart(){
+mi5startup.prototype.TestRunStart = function(){
   var self = instance;
   var deferred = Q.defer();
 
@@ -88,9 +88,9 @@ mi5startup.prototype.TestRunStart(){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.TestRunAbort(){
+mi5startup.prototype.TestRunAbort = function(){
   var self = instance;
   var deferred = Q.defer();
 
@@ -101,16 +101,16 @@ mi5startup.prototype.TestRunAbort(){
   deferred.resolve(true);
 
   return deferred.promise;
-}
+};
 
-mi5startup.prototype.TestRunOrder(recipeid){
+mi5startup.prototype.TestRunOrder = function(recipeid){
 
-}
+};
 
-mi5startup.prototype.TestRunHandleInput(){
+mi5startup.prototype.TestRunHandleInput = function(){
 
-}
+};
 
-mi5startup.prototype.TestRunHandleOutput(){
+mi5startup.prototype.TestRunHandleOutput = function(){
 
 }
