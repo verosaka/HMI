@@ -43,30 +43,30 @@ mi5Database.getLastTaskId().then(function(taskId){
 
 //********************************* Mi5 HMI Models *****************************************
 // Maintenance Module
-//GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;
-//mi5Maintenance.start(function(){});
+GLOBAL.mi5Maintenance = require('./models/mi5MaintenanceModule').newMaintenanceModule;
+mi5Maintenance.start(function(){});
 
 //Manual Module
-//GLOBAL.mi5Manual = require('./models/mi5ManualModule').newManualModule;
-//mi5Manual.start(function(){});
+GLOBAL.mi5Manual = require('./models/mi5ManualModule').newManualModule;
+mi5Manual.start(function(){});
 
 // Input Module
-//GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
-//mi5Input.start(function(){});
+GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
+mi5Input.start(function(){});
 
 // Output Module
-//GLOBAL.mi5Output = new require('./models/mi5OutputModule').newOutputModule;
-//mi5Output.start(function(){});
+GLOBAL.mi5Output = new require('./models/mi5OutputModule').newOutputModule;
+mi5Output.start(function(){});
 
 // Task Interface
-//GLOBAL.mi5TaskInterface = new require('./models/mi5TaskInterface').newTaskInterface;
-//mi5TaskInterface.start(function(){});
+GLOBAL.mi5TaskInterface = new require('./models/mi5TaskInterface').newTaskInterface;
+mi5TaskInterface.start(function(){});
 
 // Camera Module // deactivated for Briefcase Setup
 //GLOBAL.mi5Camera = new require('./models/mi5Camera').newMi5Camera;
 
 // Message Feed
-//GLOBAL.mMessageFeed = require('./models/simpleMessageFeed');
+GLOBAL.mMessageFeed = require('./models/simpleMessageFeed');
 
 //********************************* HMI Controller and Express *****************************************
 // Background Services

@@ -11,7 +11,7 @@ var Q = require('q');
 mi5Cloud.listen('/mi5/showcase/cocktail/operator/recommendation', function(recommendation){
   console.log('recommendation caught: ', recommendation);
   mi5Database.saveRecommendation(recommendation).fail(console.log);
-  IO.emit('cocktail-recommendation', recommendation);
+  IO.emit('cocktail-recommendation', true);
 });
 
 /**
@@ -173,7 +173,7 @@ function parseFeedback(order){
 
   // Calculate with accuracy of 10^6
   template.order.mixRatio.ratio.forEach(function(val, key){
-    template.order.mixRatio.ratio[key] = Math.round((val / sumRatio)*10^6)/10^6;
+    template.order.mixRatio.ratio[key] = Math.round((val / sumRatio)*100)/100;
   });
   console.log(template.order.mixRatio.ratio);
 
