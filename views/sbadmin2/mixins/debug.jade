@@ -18,30 +18,13 @@ mixin dropdown-debug()
                   span.pull-right.text-muted
                     em = true
             li.divider
-            li.divider
-            li     
-              a(href='#',onclick="socket.emit('bgDebugResetProcessTool', true);")
-                div
-                  i.fa.fa-pencil.fa-fw
-                  strong MI5.ResetProcessTool (.117)
-                  span.pull-right.text-muted
-                    em = true
-            li.divider
-            li.divider
-            li     
-              a(href='#',onclick="socket.emit('bgDebugResetXTS',1);")
-                div
-                  i.fa.fa-pencil.fa-fw
-                  strong MI5.ResetXTS (.137)
-                  span.pull-right.text-muted
-                    em = true
-            li.divider
+            // XTS Maintenance
             li.divider
             li     
               a(href='#',onclick="socket.emit('bgDebugMaintenanceTrue',1);")
                 div
                   i.fa.fa-pencil.fa-fw
-                  strong Mi5.Maintenance (.137)
+                  strong Mi5.XTS_Maintenance True
                   span.pull-right.text-muted
                     em = true
             li.divider
@@ -49,16 +32,61 @@ mixin dropdown-debug()
               a(href='#',onclick="socket.emit('bgDebugMaintenanceFalse',1);")
                 div
                   i.fa.fa-pencil.fa-fw
-                  strong Mi5.Maintenance (.137)
+                  strong Mi5.XTS_Maintenance False
                   span.pull-right.text-muted
                     em = false
             li.divider
+            // XTS Restart (true only)
             li.divider
             li     
               a(href='#',onclick="socket.emit('bgDebugRestartXTS',1);")
                 div
                   i.fa.fa-pencil.fa-fw
-                  strong Mi5.Restart (.137)
+                  strong Mi5.XTS_Restart
                   span.pull-right.text-muted
                     em = true
-                  
+            // XTS ResetSkills (true only)
+            li.divider
+            li
+              a(href='#',onclick="socket.emit('bgDebugResetSkillsXTS',1);")
+                div
+                  i.fa.fa-pencil.fa-fw
+                  strong Mi5.XTS_ResetSkills
+                  span.pull-right.text-muted
+                    em = true
+            // XTS Enable
+            li.divider
+            li
+              a(href='#',onclick="socket.emit('bgDebugEnableTrue',1);")
+                div
+                  i.fa.fa-pencil.fa-fw
+                  strong Mi5.XTS_Enable True
+                  span.pull-right.text-muted
+                em = true
+            li.divider
+            li
+              a(href='#',onclick="socket.emit('bgDebugEnableFalse',1);")
+                div
+                  i.fa.fa-pencil.fa-fw
+                  strong Mi5.XTS_Enable False
+                  span.pull-right.text-muted
+                em = false
+            li.divider
+            // XTS Warmup
+            li.divider
+            li
+              a(href='#',onclick="socket.emit('bgDebugWarmupTrue',1);")
+                div
+                  i.fa.fa-pencil.fa-fw
+                  strong Mi5.XTS_Warmup True
+                  span.pull-right.text-muted
+            em = true
+            li.divider
+            li
+              a(href='#',onclick="socket.emit('bgDebugWarmupFalse',1);")
+                div
+                  i.fa.fa-pencil.fa-fw
+                  strong Mi5.XTS_Warmup False
+                  span.pull-right.text-muted
+            em = false
+            li.divider

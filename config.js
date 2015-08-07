@@ -56,6 +56,8 @@ if (server == 'briefcase'){
 
   exports.MQTTHost                = 'mqtt://mi5.itq.de';
   exports.DatabaseHost            = 'mongodb://localhost/mi5';
+
+  exports.OPCUAXTS                = 'opc.tcp://192.168.42.10:4840';
 }
 
 /*
@@ -74,6 +76,8 @@ if (server == 'local'){
 
   exports.MQTTHost                = 'mqtt://mi5.itq.de';
   exports.DatabaseHost            = 'mongodb://localhost/mi5';
+
+  exports.OPCUAXTS                = 'opc.tcp://192.168.42.10:4840';
 }
 
 

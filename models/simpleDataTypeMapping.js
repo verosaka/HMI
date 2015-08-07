@@ -48,9 +48,11 @@ function Mi5Debug(variableName) {
   case "Pending":
   case "ResetProcessTool":
   case "ClearTaskList":
-  case "Maintenance":
-  case "ResetXTS":
-  case "Restart":
+  case "XTS_Enable":
+  case "XTS_Maintenance":
+  case "XTS_ResetSkills":
+  case "XTS_Restart":
+  case "XTS_Warmup":
     type = 'Boolean';
     break;
   default:
