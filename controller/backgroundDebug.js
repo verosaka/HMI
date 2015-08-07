@@ -46,7 +46,7 @@ function sockets(socket) {
   socket.on('bgDebugClearTaskList', function(data) {
     console.log(preLog(), 'clear task list registered');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.42:4840');
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -64,50 +64,28 @@ function sockets(socket) {
     }); // end opc.initialize
   }); // end socket.on
 
-  socket.on('bgDebugResetProcessTool', function(data) {
-    console.log(preLog(), 'Reset Process Tool event registered');
-
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.51:4840');
-    opc.initialize(function(err) {
-      if (err) {
-        console.log(err);
-        return 0;
-      }
-
-      var writethis = {
-        ResetProcessTool : true
-      };
-
-      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
-        console.log(preLog(), 'Process Tool RESET');
-        opc.disconnect();
-      }); // end opc.Mi5WriteObject
-    }); // end opc.initialize
-  }); // end socket.on
+  //socket.on('bgDebugResetProcessTool', function(data) {
+  //  console.log(preLog(), 'Reset Process Tool event registered');
+  //
+  //  var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.51:4840');
+  //  opc.initialize(function(err) {
+  //    if (err) {
+  //      console.log(err);
+  //      return 0;
+  //    }
+  //
+  //    var writethis = {
+  //      ResetProcessTool : true
+  //    };
+  //
+  //    opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+  //      console.log(preLog(), 'Process Tool RESET');
+  //      opc.disconnect();
+  //    }); // end opc.Mi5WriteObject
+  //  }); // end opc.initialize
+  //}); // end socket.on
 
   // ////////////////////////////////////////////////////////////////////////////////
-  // /////////////////// Reset XTS
-  // Reset the skills of the XTS (if PT makes an error) (just true)
-  socket.on('bgDebugResetXTS', function(data) {
-    console.log(preLog(), 'XTS - Reset XTS - event');
-
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
-    opc.initialize(function(err) {
-      if (err) {
-        console.log(err);
-        return 0;
-      }
-
-      var writethis = {
-        ResetXTS : true
-      };
-
-      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
-        console.log(preLog(), 'XTS - Reset XTS - written true');
-        opc.disconnect();
-      }); // end opc.Mi5WriteObject
-    }); // end opc.initialize
-  }); // end socket.on
 
   // /////////////////// Maintenance
   // If true, one mover to a maintenance position, if false, then mover free
@@ -115,7 +93,7 @@ function sockets(socket) {
   socket.on('bgDebugMaintenanceTrue', function(data) {
     console.log(preLog(), 'XTS - Maintenance - event true');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -123,7 +101,7 @@ function sockets(socket) {
       }
 
       var writethis = {
-        Maintenance : true
+        XTS_Maintenance : true
       };
 
       opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
@@ -135,7 +113,7 @@ function sockets(socket) {
   socket.on('bgDebugMaintenanceFalse', function(data) {
     console.log(preLog(), 'XTS - Maintenance - event false');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -143,7 +121,7 @@ function sockets(socket) {
       }
 
       var writethis = {
-        Maintenance : false
+        XTS_Maintenance : false
       };
 
       opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
@@ -152,12 +130,13 @@ function sockets(socket) {
       }); // end opc.Mi5WriteObject
     }); // end opc.initialize
   }); // end socket.on
-  // /////////////////// Restart
-  // Sets all mover to their starting position
-  socket.on('bgDebugRestartXTS', function(data) {
-    console.log(preLog(), 'XTS - Restart XTS - event');
 
-    var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.10:4840');
+  // /////////////////// Reset XTS
+  // Reset the skills of the XTS (if PT makes an error) (just true)
+  socket.on('bgDebugResetSkillsXTS', function(data) {
+    console.log(preLog(), 'XTS_ResetSkills');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -165,11 +144,119 @@ function sockets(socket) {
       }
 
       var writethis = {
-        Restart : true
+        XTS_ResetSkills : true
+      };
+
+      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+        console.log(preLog(), 'XTS - Reset XTS - written true');
+        opc.disconnect();
+      }); // end opc.Mi5WriteObject
+    }); // end opc.initialize
+  }); // end socket.on
+
+  // /////////////////// Restart
+  socket.on('bgDebugRestartXTS', function(data) {
+    console.log(preLog(), 'XTS - Restart XTS - event');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    opc.initialize(function(err) {
+      if (err) {
+        console.log(err);
+        return 0;
+      }
+
+      var writethis = {
+        XTS_Restart : true
       };
 
       opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
         console.log(preLog(), 'XTS - Restart XTS - written true');
+        opc.disconnect();
+      }); // end opc.Mi5WriteObject
+    }); // end opc.initialize
+  }); // end socket.on
+
+  /////////////////// Enable
+  socket.on('bgDebugEnableTrue', function(data) {
+    console.log(preLog(), 'XTS_Enable true');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    opc.initialize(function(err) {
+      if (err) {
+        console.log(err);
+        return 0;
+      }
+
+      var writethis = {
+        XTS_Enable : true
+      };
+
+      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+        console.log(preLog(), 'XTS_Enable - written true');
+        opc.disconnect();
+      }); // end opc.Mi5WriteObject
+    }); // end opc.initialize
+  }); // end socket.on
+
+  socket.on('bgDebugEnableFalse', function(data) {
+    console.log(preLog(), 'XTS_Enable false');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    opc.initialize(function(err) {
+      if (err) {
+        console.log(err);
+        return 0;
+      }
+
+      var writethis = {
+        XTS_Enable : false
+      };
+
+      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+        console.log(preLog(), 'XTS_Enable - written false');
+        opc.disconnect();
+      }); // end opc.Mi5WriteObject
+    }); // end opc.initialize
+  }); // end socket.on
+
+  /////////////////// Warmup
+  socket.on('bgDebugWarmupTrue', function(data) {
+    console.log(preLog(), 'XTS_Warmup - true');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    opc.initialize(function(err) {
+      if (err) {
+        console.log(err);
+        return 0;
+      }
+
+      var writethis = {
+        XTS_Warmup : true
+      };
+
+      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+        console.log(preLog(), 'XTS_Warmup - written true');
+        opc.disconnect();
+      }); // end opc.Mi5WriteObject
+    }); // end opc.initialize
+  }); // end socket.on
+
+  socket.on('bgDebugWarmupFalse', function(data) {
+    console.log(preLog(), 'XTS_Warmup - false');
+
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    opc.initialize(function(err) {
+      if (err) {
+        console.log(err);
+        return 0;
+      }
+
+      var writethis = {
+        XTS_Warmup : false
+      };
+
+      opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
+        console.log(preLog(), 'XTS_Warmup  - written false');
         opc.disconnect();
       }); // end opc.Mi5WriteObject
     }); // end opc.initialize
