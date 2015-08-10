@@ -45,15 +45,21 @@ exports.InputPositionOutput = 200;
  * OPCUA Server Configuration for Briefcase Setup
  */
 if (server == 'briefcase'){
-  exports.OPCUARecipe             = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUAOrder              = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUAMessageFeed        = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUATask               = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUAHandModule         = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUAMaintenanceModule  = 'opc.tcp://192.168.1.42:4840/';
-  exports.OPCUAInputModule        = 'opc.tcp://192.168.1.51:4840/'; // ModuleX
-  exports.OPCUAOutputModule       = 'opc.tcp://192.168.1.51:4840/';
-  exports.FTPCamera               = '192.168.192.128'; // BR Panel
+  exports.OPCUARecipe             = 'opc.tcp://localhost:4334/';
+  exports.OPCUAOrder              = 'opc.tcp://localhost:4334/';
+  exports.OPCUAMessageFeed        = 'opc.tcp://localhost:4334/';
+  exports.OPCUATask               = 'opc.tcp://localhost:4334/';
+  exports.OPCUAHandModule         = 'opc.tcp://localhost:4334/';
+  exports.OPCUAMaintenanceModule  = 'opc.tcp://localhost:4334/';
+  exports.OPCUAInputModule        = 'opc.tcp://localhost:4334/'; // ModuleX
+  exports.OPCUAOutputModule       = 'opc.tcp://localhost:4334/';
+  exports.FTPCamera               = 'localhost'; // BR Panel
+
+  exports.MQTTHost                = 'mqtt://mi5.itq.de';
+  exports.DatabaseHost            = 'mongodb://localhost/mi5';
+  exports.MongoDBPath     = '"C:\\Program Files\\MongoDB\\Server\\3.0\\bin\\mongod.exe" --dbpath c:\\Users\\Thomas';
+
+  exports.OPCUAXTS                = 'opc.tcp://192.168.42.10:4840';
 }
 
 

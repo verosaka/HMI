@@ -1,6 +1,16 @@
 var Q = require('q');
 var _ = require('underscore');
 
+var exec = require('child_process').exec;
+console.log('starting mongoDB');
+exec(CONFIG.MongoDBPath, function(error, stdout, stderr){
+  console.log('ChildProcess'.red, 'stdout:', stdout, 'stderr:', stderr);
+  if (error !== null) {
+    console.log('ChildProcess'.red, 'exec error: ' + error);
+  }
+});
+
+
 mi5database = function() {
   this.mongoose = require('mongoose-q')();
 
