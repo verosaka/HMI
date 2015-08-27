@@ -57,7 +57,7 @@ if (server == 'briefcase'){
 
   exports.MQTTHost                = 'mqtt://mi5.itq.de';
   exports.DatabaseHost            = 'mongodb://localhost/mi5';
-  exports.MongoDBPath     = '"C:\\Program Files\\MongoDB\\Server\\3.0\\bin\\mongod.exe" --dbpath c:\\Users\\Thomas';
+  exports.MongoDBPath     = '"C:\\Program Files\\MongoDB\\Server\\3.0\\bin\\mongod.exe" --dbpath c:\\Users\\username\\mongodb';
 
   exports.OPCUAXTS                = 'opc.tcp://192.168.42.10:4840';
 }
