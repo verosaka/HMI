@@ -10,7 +10,6 @@ exec(CONFIG.MongoDBPath, function(error, stdout, stderr){
   }
 });
 
-
 mi5database = function() {
   this.mongoose = require('mongoose-q')();
 
@@ -24,7 +23,7 @@ mi5database = function() {
   }
   mi5Logger.info('Database connected');
 
-  // Create the Order-Schemea
+  // Create the Schemas
   var orderSchema = this.mongoose.Schema({
     taskId          : Number
     , recipeId      : Number
@@ -43,6 +42,13 @@ mi5database = function() {
   });
   this.Recommendation = this.mongoose.model('Recommendation', recommendationSchema);
 
+  var recipeSchema = this.mongoose.Schema({
+    recipeId  : Number,
+    name      : String,
+    description : String,
+    userparameters : this.mongoose.Schema.Types.Mixed
+  });
+  this.Recipe = this.mongoose.model('Recipe', recipeSchema);
 };
 var instance = new mi5database();
 exports.instance = instance;
