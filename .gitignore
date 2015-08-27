@@ -2,7 +2,7 @@ node_modules
 .settings
 app.log
 feedback.txt
-config.js
+config.js*
 .idea
 npm-debug.log
 grunt-tests-results.txt
