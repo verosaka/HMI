@@ -54,6 +54,80 @@ var instance = new mi5database();
 exports.instance = instance;
 
 /**
+ * save a recipe
+ * @param recipeId
+ * @param name
+ * @param description
+ * @param userparameters
+ * @returns {*}
+ */
+mi5database.prototype.saveRecipe = function(recipeId, name, description, userparameters){
+  var self = instance;
+
+  var recipe = {
+    recipeId: recipeId,
+    name: name,
+    description: description,
+    userparameters: userparameters,
+  };
+
+  var NewRecipe = new self.Recipe(recipe);
+  mi5Logger.info('new recipe saving:'+recipe);
+  return NewRecipe.saveQ();
+};
+
+/**
+ * get a Recipe by id
+ *
+ * returns undefined if no recipe is found
+ *
+ * @param recipeId
+ * @returns {*|promise}
+ */
+mi5database.prototype.getRecipe = function(recipeId){
+  var self = instance;
+  var deferred = Q.defer();
+
+  self.Recipe.find({'recipeId': recipeId}).limit(1).exec(function(err, post){
+    if(err) deferred.reject(err);
+
+    deferred.resolve(post.pop());
+  });
+
+  return deferred.promise;
+};
+
+mi5database.prototype.manageRecipe = function(recipeId, name, description, userparameters){
+  var self = instance;
+
+  return self.getRecipe(recipeId)
+    .then(function(recipe){
+      if(typeof recipe == 'undefined'){
+        return self.saveRecipe(recipeId, name, description, userparameters);
+      }
+      else {
+        //var deferred = Q.defer();
+        //deferred.reject('no update method implemented yet');
+        //return deferred.promise;
+        return self.updateRecipe(recipeId, name, description, userparameters);
+      }
+    });
+};
+
+mi5database.prototype.updateRecipe = function(recipeId, name, description, userparameters){
+  var self = instance;
+
+  var recipe = {
+    recipeId: recipeId,
+    name: name,
+    description: description,
+    userparameters: userparameters,
+  };
+
+  return self.Recipe.updateQ({recipeId: recipeId}, recipe);
+}
+
+/**
  * Save an order
  *
  * @param taskId [int]

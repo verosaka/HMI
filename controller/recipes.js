@@ -37,20 +37,17 @@ function placeOrder(req, res) {
   console.log(postParameters);
 
   CONFIG.TaskId = CONFIG.TaskId + 1;
-  var taskId = CONFIG.TaskId;
+  var taskId = parseInt(CONFIG.TaskId, 10);
 
   // Parse Order Object
   var order = {
     Pending : true,
-    RecipeID : parseInt(recipeId, 10),
-    TaskID : parseInt(taskId, 10)
+    RecipeID : recipeId,
+    TaskID : taskId,
   };
 
   // Parse UserParameters Array
   var userParameters = _handlePostParameters(postParameters);
-
-  // Save the order to the Database
-  mi5Database.saveOrder(taskId, recipeId, postParameters);
 
   // Debug
   console.log('ORDER'.bgBlue, order, userParameters);
@@ -62,6 +59,12 @@ function placeOrder(req, res) {
       };
       res.render('bootstrap/blank', jadeData);
     }
+
+    // Save the order to the Database
+    mi5Database.saveOrder(taskId, recipeId, postParameters)
+      .fail(function(err){
+        console.log('mi5database.saveOrder - err: ',err);
+      });
 
     var jadeData = {
       content : 'Order has been placed! The corresponding (unique) TaskID is :' + taskId,
@@ -152,6 +155,13 @@ function ifeellucky(req, res) {
           console.log('RecipeInterface - an error has occured:', err);
           res.redirect('order/error/');
         }
+
+        // Save the order to the Database
+        mi5Database.saveOrder(taskId, recipeId, postParameters)
+          .fail(function(err){
+            console.log('mi5database.saveOrder - err: ',err);
+          });
+
         res.redirect('/order/placed/' + taskId);
       });
 
@@ -182,6 +192,13 @@ function directOrder(req, res) {
       console.log('ERR - RecipeInterface - an error has occured:', err);
       res.redirect('/order/error/');
     }
+
+    // Save the order to the Database
+    mi5Database.saveOrder(taskId, recipeId, postParameters)
+      .fail(function(err){
+        console.log('mi5database.saveOrder - err: ',err);
+      });
+
     res.redirect('/order/placed/' + taskId);
   });
 
