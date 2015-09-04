@@ -24,7 +24,7 @@ GLOBAL.md5 = require('MD5');
 GLOBAL.moment = require('moment');
 
 // Configuration
-GLOBAL.CONFIG = require('./config.js');
+GLOBAL.CONFIG = require('./config.js').config;
 
 //********************************* Mi5 Backend Models *****************************************
 // Logger

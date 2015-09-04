@@ -1,15 +1,6 @@
 var Q = require('q');
 var _ = require('underscore');
 
-var exec = require('child_process').exec;
-console.log('starting mongoDB');
-exec(CONFIG.MongoDBPath, function(error, stdout, stderr){
-  console.log('ChildProcess'.red, 'stdout:', stdout, 'stderr:', stderr);
-  if (error !== null) {
-    console.log('ChildProcess'.red, 'exec error: ' + error);
-  }
-});
-
 mi5database = function() {
   this.mongoose = require('mongoose-q')();
 
@@ -102,13 +93,10 @@ mi5database.prototype.manageRecipe = function(recipeId, name, description, userp
 
   return self.getRecipe(recipeId)
     .then(function(recipe){
-      if(typeof recipe == 'undefined'){
+      if(typeof recipe == 'undefined'){ // no recipe found
         return self.saveRecipe(recipeId, name, description, userparameters);
       }
       else {
-        //var deferred = Q.defer();
-        //deferred.reject('no update method implemented yet');
-        //return deferred.promise;
         return self.updateRecipe(recipeId, name, description, userparameters);
       }
     });
