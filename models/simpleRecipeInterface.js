@@ -60,7 +60,7 @@ function getRecipes(recipeStructIdArray, callback) {
       var recipe = opc._structRecipeBase('MI5.Recipe[' + id + '].');
       opc.mi5ReadArray(recipe, function(err, data) {
         // Push Jade-Formatted Data
-        console.log('recipe-date',data);
+        //console.log('recipe-date',data);
         var output = jadeH.convertMi5ReadArrayRecipeToJade(data);
 
         // Check for Dummy
@@ -125,7 +125,7 @@ function setOrder(order, userParameters, callback) {
     queue.on('changed', function(data) {
       if (data.value.value === false) {
         // Queue is ready
-        console.log('monitor Pending changed: ', data.value.value, ' -- order!');
+        console.log('Recipe Tool - monitor Pending changed: ', data.value.value, ' -- order!');
 
         // Write Order in MI5.Order
         async.series([ function(callback) {

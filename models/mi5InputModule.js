@@ -40,6 +40,8 @@ module = function() {
   console.log(preLog() + 'endpoint', CONFIG.OPCUAInputModule);
 
   this.Mi5ModuleInterface = require('./../models/simpleDataTypeMapping.js').Mi5ModuleInterface;
+
+  this.state = ''; // ready -> execute -> busy -> done -> ready
 };
 exports.newInputModule = new module();
 
@@ -164,6 +166,7 @@ module.prototype.makeItReady = function(callbackMain) {
             self.setValue(self.jadeData.Name.nodeId, self.ModuleName, callback); // Default
             // Position
           }, function(callback) {
+            self.state = 'ready';
             console.log(preLog() + 'OK - Input Module is set to Ready-State');
             callbackMain();
           } ]);
