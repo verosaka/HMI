@@ -131,7 +131,7 @@ mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
               parameters: userParameters};
 
   var NewOrder = new self.Order(order);
-  mi5Logger.info('new order:'+order);
+  mi5Logger.info('new order saved to database:'+JSON.stringify(order,' '));
   return NewOrder.saveQ();
 };
 

@@ -1,1 +1,1 @@
-node app.js -server=briefcase
+node app.js -server=briefcase -startMongoDB
