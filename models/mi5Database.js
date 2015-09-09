@@ -4,7 +4,7 @@ var _ = require('underscore');
 mi5database = function() {
   this.mongoose = require('mongoose-q')();
 
-  mi5Logger.info('Mi5 - Database loaded');
+  console.log('Mi5 - Database loaded');
 
   // Connect to database
   try {
@@ -12,7 +12,7 @@ mi5database = function() {
   } catch(err){
     console.log(err);
   }
-  mi5Logger.info('Database connected');
+  console.log('Database connected');
 
   // Create the Schemas
   var orderSchema = this.mongoose.Schema({
@@ -63,7 +63,7 @@ mi5database.prototype.saveRecipe = function(recipeId, name, description, userpar
   };
 
   var NewRecipe = new self.Recipe(recipe);
-  mi5Logger.info('new recipe saving:'+recipe);
+  console.log('new recipe saving:'+recipe);
   return NewRecipe.saveQ();
 };
 
@@ -131,7 +131,7 @@ mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
               parameters: userParameters};
 
   var NewOrder = new self.Order(order);
-  mi5Logger.info('new order:'+order);
+  console.log('new order:'+order);
   return NewOrder.saveQ();
 };
 
@@ -139,7 +139,7 @@ mi5database.prototype.saveRecommendation = function(recommendation){
   var self = instance;
 
   var NewRecommendation = new self.Recommendation(recommendation);
-  mi5Logger.info('new recommendation saved:'+recommendation);
+  console.log('new recommendation saved:'+recommendation);
   return NewRecommendation.saveQ();
 };
 
