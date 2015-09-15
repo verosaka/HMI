@@ -10,10 +10,10 @@ mi5rest = function() {
   var self = this;
   
   try {
-    self._checkServer('https://mi5.itq.de/helloWorld')
+    self._checkServer()
 	  .spread(function(res, body){
 	    console.log(body);
-		console.log('REST API started');
+		  console.log('REST API started');
 		})
 	  .catch(console.log);
   } catch(err){
@@ -24,13 +24,12 @@ mi5rest = function() {
 
 // This is needed, since mi5rest constructor is synchronous, its promised-
 // based API not. otherwise: ZALGO!
-setTimeout(function(){
-  var instance = new mi5rest();
-  exports.instance = instance;
-},0);
+
+var instance = new mi5rest();
+exports.instance = instance;
 
 mi5rest.prototype.saveOrder = function(taskId, recipeId, userParameters){
-  var self = instance;
+  var self = this;
 
   var order = {taskId: taskId,
     recipeId: recipeId,
@@ -41,7 +40,7 @@ mi5rest.prototype.saveOrder = function(taskId, recipeId, userParameters){
 };
 
 mi5rest.prototype.manageRecipe = function(recipeId, name, description, userparameters){
-  var self = instance;
+  var self = this;
 
   var recipe = {recipeId: recipeId,
     name: name,
@@ -50,43 +49,60 @@ mi5rest.prototype.manageRecipe = function(recipeId, name, description, userparam
 
   var options = {
     url: CONFIG.RESTHost+'/manageRecipe',
-    rejectUnauthoriyed: false,
+    rejectUnauthorized: false,
     formData: {
       recipe: JSON.stringify(recipe)
+    },
+    auth: {
+      user: CONFIG.RESTUser,
+      password: CONFIG.RESTPassword
     }
   };
   
   return Q.promise(function(resolve, reject){
-    request.post(options, function(err, httpRes){
+    request.post(options, function(err, res){
       if(!err){
-        mi5Logger.info('recipe was managed :'+JSON.stringify(httpRes,' '));
-        console.log(httpRes);
-        resolve(httpRes);
+        // check res
+        if(res.statusCode != 200) {
+          reject(new Error('statusCode is not ok \n res:' + JSON.stringify(res, '\n')));
+        } else {
+          // all fine
+          mi5Logger.info('recipe was managed :'+JSON.stringify(httpRes,' '));
+          resolve(httpRes);
+        }
       } else {
-        reject(err);
+        reject(new Error(err));
       }
     });
   });
 };
 
-mi5rest.prototype._checkServer = function(host){
+mi5rest.prototype._checkServer = function(){
   var self = this;
 
   return Q.Promise(function(resolve, reject){
     // TODO: import mi5.itq.de certificate
     // http://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
     var options = {
-      url: host,
-	    rejectUnauthorized: false
+      url: CONFIG.RESTHost,
+      rejectUnauthorized: false,
+      auth: {
+        user: CONFIG.RESTUser,
+        password: CONFIG.RESTPassword
+      }
     };
     request.get(options, function(err, res, body){
-	  if(err) reject(err);
-	  
-	  if(body.toString() == 'Unauthorized'){
-		  reject('MI5REST: wrong username and password');
-	  }
-	  
-	  resolve([res, body]);
+      if(err) {
+        reject(new Error(err));
+        return;
+      }
+
+      if(body.toString() == 'Unauthorized'){
+        reject(new Error('MI5REST: wrong username and password, \n body:', body));
+        return;
+      }
+
+      resolve([res, body]);
     });
   });
 };

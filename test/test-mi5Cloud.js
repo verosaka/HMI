@@ -15,7 +15,7 @@ GLOBAL.mi5Logger = require('./../models/mi5Logger').logger;
 mi5Logger.start();
 
 /********************************* Test *****************************************/
-describe('MQTT - Tests', function() {
+describe.skip('MQTT - Tests', function() {
     // Do a second connection to check and subscribe (manually) for testing
     var mqtt = require('mqtt');
     var client = mqtt.connect(CONFIG.MQTTHost);
