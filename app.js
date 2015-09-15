@@ -34,6 +34,9 @@ mi5Logger.start();
 // Mi5 Cloud Model - MQTT
 GLOBAL.mi5Cloud = require('./models/mi5Cloud').mi5cloud;
 
+// Mi5 Cloud Model - REST
+GLOBAL.mi5REST = require('./models/mi5REST').mi5rest;
+
 // Mi5 Database Model - MongoDB
 GLOBAL.mi5Database = require('./models/mi5Database').instance;
 mi5Database.getLastTaskId().then(function(taskId){

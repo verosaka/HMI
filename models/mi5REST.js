@@ -11,8 +11,8 @@ mi5rest = function() {
   
   try {
     self._checkServer('https://mi5.itq.de/helloWorld')
-	  .then(function(res, body){
-	    console.log(res, body);
+	  .spread(function(res, body){
+	    console.log(body);
 		console.log('REST API started');
 		})
 	  .catch(console.log);
@@ -52,14 +52,10 @@ mi5rest.prototype.manageRecipe = function(recipeId, name, description, userparam
     url: CONFIG.RESTHost+'/manageRecipe',
     rejectUnauthoriyed: false,
     formData: {
-      recipe: JSON.stringify({
-        recipeId: recipeId,
-        name: name,
-        description: description,
-        userparameters: userparameters
-      });
+      recipe: JSON.stringify(recipe)
     }
-  }
+  };
+  
   return Q.promise(function(resolve, reject){
     request.post(options, function(err, httpRes){
       if(!err){
@@ -75,19 +71,22 @@ mi5rest.prototype.manageRecipe = function(recipeId, name, description, userparam
 
 mi5rest.prototype._checkServer = function(host){
   var self = this;
-  var deferred = Q.defer();
 
-  // TODO: import mi5.itq.de certificate
-  // http://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
-  var options = {
-    url: host,
-	  rejectUnauthorized: false
-  };
-  request.get(options, function(err, res, body){
-	if(err) deferred.reject(err);
-
-	deferred.resolve(res, body);
+  return Q.Promise(function(resolve, reject){
+    // TODO: import mi5.itq.de certificate
+    // http://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+    var options = {
+      url: host,
+	    rejectUnauthorized: false
+    };
+    request.get(options, function(err, res, body){
+	  if(err) reject(err);
+	  
+	  if(body.toString() == 'Unauthorized'){
+		  reject('MI5REST: wrong username and password');
+	  }
+	  
+	  resolve([res, body]);
+    });
   });
-  
-  return deferred.promise;
 };

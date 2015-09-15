@@ -122,13 +122,6 @@ function recommendation(req, res) {
 }
 exports.recommendation = recommendation;
 
-
-
-
-
-
-
-
 function parseFeedback(order){
   var template = {
     "productId": 0, // overwrite with taskId
