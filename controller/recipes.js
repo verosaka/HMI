@@ -23,6 +23,35 @@ function index(req, res) {
 }
 exports.index = index;
 
+function manageRecipes(req, res) {
+  var _ = require('underscore');
+  var jadeData = {};
+  var recipeInterface = require('./../models/simpleRecipeInterface');
+
+  // recipeIdArray = [ 0, 1 ];
+  // recipeInterface.getRecipes(recipeIdArray, function(err, recipes) {
+  recipeInterface.getAllRecipes(function(err, recipes) {
+    if (err) {
+      jadeData.error = err;
+    } else {
+      jadeData.recipes = recipes;
+      // console.log(JSON.stringify(recipes, null, 1));
+      console.log('getAllRecipes() done.');
+	  
+	  _.each(recipes, function(recipe){
+		  console.log('manage',recipe);
+		  mi5REST.manageRecipe(recipe)
+		    .catch(console.log);
+	  });
+    }
+
+    res.render('sbadmin2/order', jadeData);
+    res.end();
+  });
+}
+exports.manageRecipes = manageRecipes;
+exports.index = index;
+
 /**
  * View to place the order
  * 
@@ -206,6 +235,8 @@ function directOrder(req, res) {
 exports.directOrder = directOrder;
 
 function customOrder(req, res) {
+  var _ = require('underscore');
+  
   var recipeId = parseInt(req.params.recipeId, 10);
   assert(_.isNumber(recipeId));
   console.log('OK - Custom order - RecipeID: ', recipeId);
@@ -223,7 +254,7 @@ function customOrder(req, res) {
       jadeData.recipes = recipes;
       console.log('OK - read specific Recipe with UserParameters');
     }
-
+		
     res.render('sbadmin2/order_custom', jadeData);
     res.end();
   });
@@ -256,3 +287,30 @@ function orderPlaced(req, res) {
   });
 }
 exports.orderPlaced = orderPlaced;
+
+
+function opcuaRecipe2postRecipe(recipe){
+	var postRecipe = {};
+	postRecipe.userparameters = [];
+	_.each(recipes[0],function(param, name){
+	  if(_.isArray(param)){
+		  _.each(param, function(userparam, name){
+			  //console.log('userparam', name);
+			  
+			  var userParameters = {};
+			  
+			  _.each(userparam, function(parameter, name){
+				  userParameters[name] = parameter.value;
+				  //console.log('parameter',name,'values',parameter.value);
+			  });
+			  
+			  postRecipe.userparameters.push(userParameters);
+		  });
+	  } else {
+		  postRecipe[name] = param.value;
+		  //console.log('name', name, 'param', param.value);
+	  }
+	});
+	//console.log('-----constructed:',postRecipe);
+	return postRecipe;
+}

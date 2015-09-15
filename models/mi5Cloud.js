@@ -8,7 +8,11 @@ var Q = require('q');
 mi5cloud = function() {
   mi5Logger.info('Mi5 - Cloud loaded');
 
-  this.client = mqtt.connect(CONFIG.MQTTHost);
+  try{  
+	this.client = mqtt.connect(CONFIG.MQTTHost);
+  } catch(err){
+	  console.log('no connection to MQTT');
+  }
   mi5Logger.info('MQTT connected');
 };
 exports.mi5cloud = new mi5cloud();

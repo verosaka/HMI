@@ -38,6 +38,7 @@ exports.router = function(app) {
   // Custom Order
   app.get('/order/custom/:recipeId', recipes.customOrder);
   app.post('/order/order/:recipeId', recipes.placeOrder);
+  app.get('/recipes/manage', recipes.manageRecipes);
 
   // Tasks
   app.get('/tasks', tasks.taskList);

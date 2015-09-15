@@ -29,7 +29,7 @@ var instance = new mi5rest();
 exports.instance = instance;
 
 mi5rest.prototype.saveOrder = function(taskId, recipeId, userParameters){
-  var self = this;
+  var self = instance;
 
   var order = {taskId: taskId,
     recipeId: recipeId,
@@ -39,13 +39,8 @@ mi5rest.prototype.saveOrder = function(taskId, recipeId, userParameters){
   return NewOrder.saveQ();
 };
 
-mi5rest.prototype.manageRecipe = function(recipeId, name, description, userparameters){
-  var self = this;
-
-  var recipe = {recipeId: recipeId,
-    name: name,
-    description: description,
-    userparameters: userparameters};
+mi5rest.prototype.manageRecipe = function(recipe){
+  var self = instance;
 
   var options = {
     url: CONFIG.RESTHost+'/manageRecipe',

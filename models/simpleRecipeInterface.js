@@ -60,7 +60,6 @@ function getRecipes(recipeStructIdArray, callback) {
       var recipe = opc._structRecipeBase('MI5.Recipe[' + id + '].');
       opc.mi5ReadArray(recipe, function(err, data) {
         // Push Jade-Formatted Data
-        //console.log('recipe-date',data);
         var output = jadeH.convertMi5ReadArrayRecipeToJade(data);
 
         // Check for Dummy
