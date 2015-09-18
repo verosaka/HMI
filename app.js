@@ -35,7 +35,7 @@ mi5Logger.start();
 GLOBAL.mi5Cloud = require('./models/mi5Cloud').mi5cloud;
 
 // Mi5 Cloud Model - REST
-GLOBAL.mi5REST = require('./models/mi5REST').mi5rest;
+GLOBAL.mi5REST = require('./models/mi5REST').instance;
 
 // Mi5 Database Model - MongoDB
 GLOBAL.mi5Database = require('./models/mi5Database').instance;

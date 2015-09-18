@@ -41,11 +41,11 @@ mi5rest.prototype.saveOrder = function(taskId, recipeId, userParameters){
 
 mi5rest.prototype.manageRecipe = function(recipe){
   var self = instance;
-
+    
   var options = {
     url: CONFIG.RESTHost+'/manageRecipe',
     rejectUnauthorized: false,
-    formData: {
+    form: {
       recipe: JSON.stringify(recipe)
     },
     auth: {
@@ -62,8 +62,7 @@ mi5rest.prototype.manageRecipe = function(recipe){
           reject(new Error('statusCode is not ok \n res:' + JSON.stringify(res, '\n')));
         } else {
           // all fine
-          mi5Logger.info('recipe was managed :'+JSON.stringify(httpRes,' '));
-          resolve(httpRes);
+          resolve(res);
         }
       } else {
         reject(new Error(err));

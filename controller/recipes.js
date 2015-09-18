@@ -28,20 +28,24 @@ function manageRecipes(req, res) {
   var jadeData = {};
   var recipeInterface = require('./../models/simpleRecipeInterface');
 
-  // recipeIdArray = [ 0, 1 ];
-  // recipeInterface.getRecipes(recipeIdArray, function(err, recipes) {
   recipeInterface.getAllRecipes(function(err, recipes) {
     if (err) {
       jadeData.error = err;
     } else {
       jadeData.recipes = recipes;
-      // console.log(JSON.stringify(recipes, null, 1));
       console.log('getAllRecipes() done.');
 	  
+	  console.log('manage recipes now...');
+	  
 	  _.each(recipes, function(recipe){
-		  console.log('manage',recipe);
-		  mi5REST.manageRecipe(recipe)
-		    .catch(console.log);
+		  var postRecipe = opcuaRecipe2postRecipe(recipe);
+		  mi5REST.manageRecipe(postRecipe)
+		  .then(function(result){
+			  mi5Logger.info('mi5REST - recipe was managed, recipeId: '+postRecipe.RecipeID);
+		  })
+		  .catch(function(err){
+			  console.log('error catch', err);
+		  });
 	  });
     }
 
@@ -292,7 +296,7 @@ exports.orderPlaced = orderPlaced;
 function opcuaRecipe2postRecipe(recipe){
 	var postRecipe = {};
 	postRecipe.userparameters = [];
-	_.each(recipes[0],function(param, name){
+	_.each(recipe,function(param, name){
 	  if(_.isArray(param)){
 		  _.each(param, function(userparam, name){
 			  //console.log('userparam', name);
