@@ -69,6 +69,7 @@ function placeOrder(req, res) {
   var postParameters = req.body.userparameter;
   console.log(postParameters);
 
+  // Generate new taskId for order
   CONFIG.TaskId = CONFIG.TaskId + 1;
   var taskId = parseInt(CONFIG.TaskId, 10);
 
