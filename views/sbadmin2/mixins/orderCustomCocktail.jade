@@ -124,9 +124,7 @@ mixin orderCustomCocktail(recipe)
                                                     - var myStep=Math.round(userParameter.Step.value);
                                                     - console.log("mystep: "+myStep);
                                                     - if(myStep == 0){ myStep = 1; }
-                                                    //b= userParameter.MinValue.value
-                                                    //input.span2(name='userparameter', id=userParameter.Name.containerId, type="text", data-slider-value=userParameter.Default.value, data-slider-min=userParameter.MinValue.value, data-slider-max=userParameter.MaxValue.value, data-slider-step=myStep, style="width: 90%")
-                                                    input.span2(name='userparameter', id=userParameter.Name.containerId, type="text", data-slider-value=100, data-slider-min=5, data-slider-max=200, data-slider-step=myStep, style="width: 90%")
+                                                    input.span2(name='userparameter', id=userParameter.Name.containerId, type="text", data-slider-value=userParameter.Default.value, data-slider-min=userParameter.MinValue.value, data-slider-max=userParameter.MaxValue.value, data-slider-step=myStep, style="width: 90%")
                                                     //b= userParameter.MaxValue.value
                                             script.
                                                 $(function(){
