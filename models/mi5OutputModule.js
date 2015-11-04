@@ -238,22 +238,32 @@ module.prototype.ioRegister = function(socket) {
 
 module.prototype.socketUserIsBusy = function() {
   var self = this;
-  console.log(preLog() + 'OK - User is busy');
-  self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, true, function() {
-  });
-  self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
-  });
+
+  if(self.jadeData.SkillInput[0].Execute.value == true){
+    console.log(preLog() + 'OK - User is busy');
+    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, true, function() {
+    });
+    self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
+    });
+  } else {
+    console.log(preLog() + 'someone pressed busy even though there is no execute!');
+  }
 
 };
 
 module.prototype.socketUserIsDone = function() {
   var self = this;
-  self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, true, function(err) {
-    console.log(preLog() + 'OK - User is done');
-  });
-  self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false, function(err) {
-    console.log(preLog() + 'OK - waiting for PT to set execute = false');
-  });
+
+  if(self.jadeData.SkillInput[0].Execute.value == true) {
+    self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, true, function (err) {
+      console.log(preLog() + 'OK - User is done');
+    });
+    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false, function (err) {
+      console.log(preLog() + 'OK - waiting for PT to set execute = false');
+    });
+  } else {
+    console.log(preLog() + 'someone pressed done even though there is no execute!');
+  }
 };
 
 // /////////////////////////////////////////////////////////////////
