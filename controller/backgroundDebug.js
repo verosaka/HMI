@@ -46,7 +46,7 @@ function sockets(socket) {
   socket.on('bgDebugClearTaskList', function(data) {
     console.log(preLog(), 'clear task list registered');
 
-    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAXTS);
+    var opc = require('./../models/simpleOpcua').server(CONFIG.OPCUARecipe);
     opc.initialize(function(err) {
       if (err) {
         console.log(err);
@@ -63,27 +63,6 @@ function sockets(socket) {
       }); // end opc.Mi5WriteObject
     }); // end opc.initialize
   }); // end socket.on
-
-  //socket.on('bgDebugResetProcessTool', function(data) {
-  //  console.log(preLog(), 'Reset Process Tool event registered');
-  //
-  //  var opc = require('./../models/simpleOpcua').server('opc.tcp://192.168.42.51:4840');
-  //  opc.initialize(function(err) {
-  //    if (err) {
-  //      console.log(err);
-  //      return 0;
-  //    }
-  //
-  //    var writethis = {
-  //      ResetProcessTool : true
-  //    };
-  //
-  //    opc.mi5WriteObject('MI5.', writethis, Mi5DebugMapping, function(err) {
-  //      console.log(preLog(), 'Process Tool RESET');
-  //      opc.disconnect();
-  //    }); // end opc.Mi5WriteObject
-  //  }); // end opc.initialize
-  //}); // end socket.on
 
   // ////////////////////////////////////////////////////////////////////////////////
 
