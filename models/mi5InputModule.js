@@ -273,10 +273,15 @@ module.prototype.ioRegister = function(socket) {
 module.prototype.socketUserIsBusy = function() {
   var self = this;
   console.log(preLog() + 'OK - User is busy');
-  self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, true, function() {
-  });
-  self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
-  });
+
+  if(self.jadeData.SkillOutput[0].Busy.value == true){
+    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, true, function() {
+    });
+    self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
+    });
+  } else {
+    console.log(preLog() + 'someone pressed busy even though there is no execute!');
+  }
 
 };
 

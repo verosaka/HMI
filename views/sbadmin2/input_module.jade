@@ -47,7 +47,7 @@ block content
                           console.log('mmExecute.value true beforehand');
                           executeIsTrue();
                         }
-                              
+                //
                 //- Start Button
                 li.timeline-inverted
                   div.timeline-badge(id=module.SkillOutput[0].Busy.containerId+'badge', onclick="socket.emit('#{module.SkillOutput[0].Busy.submitEvent}', true);", style="cursor: pointer")
@@ -62,12 +62,12 @@ block content
                           $("##{module.SkillOutput[0].Busy.containerId}badge").addClass('success');
                           $("##{module.SkillOutput[0].Busy.containerId}text").html('Started...');
                         }
-                        socket.on("#{module.SkillOutput[0].Busy.updateEvent}", function(data){ 
+                        socket.on("#{module.SkillOutput[0].Busy.updateEvent}", function(data){
                           if(data === true){
-                            busyIsTrue();                            
+                            busyIsTrue();
                           }
                         });
-                        if(#{module.SkillOutput[0].Busy.value}===true){ 
+                        if(#{module.SkillOutput[0].Busy.value}===true){
                           console.log('mmBusy.value true');
                           busyIsTrue();
                         }
