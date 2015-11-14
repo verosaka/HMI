@@ -95,6 +95,33 @@ function _readMessageEntry(baseNode) {
           _emitMessageFeedArray('messageFeedSingle', 1);
           _emitMessageFeedBadge();
           console.log(preLog(), 'OK - MessageFeed - IO.emit() - Level: ', jadeData.Message.value);
+
+          /**
+           * CloudLink
+           * add status update functionality
+           * @date 11/14/2015
+           */
+          // check if the messagefeed string contains 'Finished Task'
+          if(jadeData.Message.value.indexOf('Finished Task') != -1){
+
+            // extract the task id
+            var re = /[0-9]*$/i;
+            var match;
+            var str = jadeData.Message.value;
+            var taskId;
+
+            if ((match = re.exec(str)) !== null) {
+              if (match.index === re.lastIndex) {
+                re.lastIndex++;
+              }
+              taskId = match[0];
+            }
+
+            console.log(preLog(), 'perform CloudLink report that task with id',taskId,' is finished');
+            mi5REST.updateOrderStatus(taskId, 'done')
+              .then(console.log)
+              .catch(console.log);
+          }
         }
 
       }
