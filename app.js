@@ -57,6 +57,10 @@ mi5Manual.start(function(){});
 GLOBAL.mi5Input = new require('./models/mi5InputModule').newInputModule;
 mi5Input.start(function(){});
 
+// Input-Barcode Module
+GLOBAL.mi5InputBarcode = new require('./models/mi5InputBarcodeModule').newInputModule;
+mi5InputBarcode.start(function(){});
+
 // Output Module
 GLOBAL.mi5Output = new require('./models/mi5OutputModule').newOutputModule;
 mi5Output.start(function(){});

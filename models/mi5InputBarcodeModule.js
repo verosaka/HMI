@@ -30,12 +30,12 @@ module = function() {
   this.rawData = undefined;
   this.jadeData = {};
 
-  this.socketRoom = 'input-module';
+  this.socketRoom = 'input-barcode-module';
   this.ModuleId = 2501;
-  this.SkillID = 1402;
-  this.SkillIDBarcode = 1405;
+  this.SkillID = 1405;
   this.PositionOutput = 1345;
-  this.ModuleName = 'Input Module';
+  this.ModuleName = 'Input Barcode Module';
+  this.SkillName = 'Input Barcode Skill';
 
   this.opc = require('./../models/simpleOpcua').server(CONFIG.OPCUAInputModule);
   console.log(preLog() + 'endpoint', CONFIG.OPCUAInputModule);
@@ -47,7 +47,7 @@ module = function() {
 exports.newInputModule = new module();
 
 function preLog() {
-  return 'Input-Module: '.magenta;
+  return 'Barcode'.magenta+'-Module: '.white;
 }
 
 /**
@@ -56,11 +56,11 @@ function preLog() {
  * @param callback
  */
 module.prototype.start = function(callback) {
-  var self = mi5Input;
+  var self = mi5InputBarcode;
 
   self.initialize(function(err) {
     if (!err) {
-      console.log('Input Module is connected');
+      console.log('Barcode Module is connected');
       self.getModuleData(function(err) {
         if (!err) {
           self.subscribe();
@@ -112,9 +112,9 @@ module.prototype.getModuleData = function(callbackMain) {
   assert(typeof callbackMain === "function");
 
   async.series([ function(callback) {
-    mi5Input.getInput(callback);
+    mi5InputBarcode.getInput(callback);
   }, function(callback) {
-    mi5Input.getOutput(callback);
+    mi5InputBarcode.getOutput(callback);
   }, ], function(err, results) {
     callbackMain();
   });
@@ -129,48 +129,45 @@ module.prototype.getModuleData = function(callbackMain) {
 module.prototype.makeItReady = function(callbackMain) {
   var self = this;
 
-  // Normal Input Module
+  // Barcode Input Module
   async
-      .series([
-          function(callback) {
-            self.setValue(self.jadeData.Dummy.nodeId, false, callback);
-          },
-          function(callback) {
-            console.log(preLog(), self.jadeData.SkillOutput[0].ID.nodeId);
-            self.setValue(self.jadeData.SkillOutput[0].ID.nodeId, self.SkillID,
-                callback);
-          },
-          function(callback) {
-            self.setValue(self.jadeData.SkillOutput[0].Dummy.nodeId, false,
-                callback);
-          },
-          function(callback) {
-            self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, true,
-                callback);
-          },
-          function(callback) { // Set Defaults now
-            self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false,
-                callback);
-          },
-          function(callback) {
-            self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, false,
-                callback);
-          },
-          function(callback) {
-            self.setValue(self.jadeData.SkillInput[0].Execute.nodeId, false,
-                callback);
-          },
-          function(callback) {
-            self.setValue(self.jadeData.PositionOutput.nodeId,
-                self.PositionOutput, callback); // Default Position
-          },
-          function(callback) {
-            self.setValue(self.jadeData.Name.nodeId, self.ModuleName, callback);
-          }, function(callback) {
-            self.state = 'ready';
-            console.log(preLog() + 'OK - Input Module is set to Ready-State');
-            callbackMain();
-          } ]);
+    .series([
+      //function(callback) {
+      //  self.setValue(self.jadeData.Dummy.nodeId, false, callback);
+      //},
+      function(callback) {
+        console.log(preLog(), self.jadeData.SkillOutput[1].ID.nodeId);
+        self.setValue(self.jadeData.SkillOutput[1].ID.nodeId, self.SkillID,
+          callback);
+      },
+      function(callback) {
+        self.setValue(self.jadeData.SkillOutput[1].Dummy.nodeId, false,
+          callback);
+      },
+      function(callback) {
+        self.setValue(self.jadeData.SkillOutput[1].Ready.nodeId, true,
+          callback);
+      },
+      function(callback) { // Set Defaults now
+        self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, false,
+          callback);
+      },
+      function(callback) {
+        self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, false,
+          callback);
+      },
+      function(callback) {
+        self.setValue(self.jadeData.SkillInput[1].Execute.nodeId, false,
+          callback);
+      },
+      function(callback) {
+        self.setValue(self.jadeData.SkillOutput[1].Name.nodeId, self.SkillName, callback);
+      },
+      function(callback) {
+        self.state = 'ready';
+        console.log(preLog() + 'OK - Input Module is set to Ready-State');
+        callbackMain();
+      } ]);
 
 };
 
@@ -190,16 +187,16 @@ module.prototype.subscribe = function() {
       'opc is not initialized call self.initialize() *async* first');
 
   var monitor = [ {
-    nodeId : self.jadeData.SkillInput[0].Execute.nodeId,
+    nodeId : self.jadeData.SkillInput[1].Execute.nodeId,
     callback : self.onExecuteChange
   }, {
-    nodeId : self.jadeData.SkillOutput[0].Busy.nodeId,
+    nodeId : self.jadeData.SkillOutput[1].Busy.nodeId,
     callback : self.onBusyChange
   }, {
-    nodeId : self.jadeData.SkillOutput[0].Done.nodeId,
+    nodeId : self.jadeData.SkillOutput[1].Done.nodeId,
     callback : self.onDoneChange
   }, {
-    nodeId : self.jadeData.SkillOutput[0].Ready.nodeId,
+    nodeId : self.jadeData.SkillOutput[1].Ready.nodeId,
     callback : self.onReadyChange
   } ];
 
@@ -209,48 +206,48 @@ module.prototype.subscribe = function() {
 };
 
 module.prototype.onBusyChange = function(data) {
-  var self = mi5Input; // since it is called before getModuleData
+  var self = mi5InputBarcode; // since it is called before getModuleData
 
   if (data.value.value === true) {
-    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Busy.updateEvent,
+    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[1].Busy.updateEvent,
         true);
   }
   console.log(preLog() + 'onBusyChange', data.value.value);
 };
 module.prototype.onDoneChange = function(data) {
-  var self = mi5Input; // since it is called before getModuleData
+  var self = mi5InputBarcode; // since it is called before getModuleData
 
   if (data.value.value === true) {
-    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[0].Done.updateEvent,
+    io.to(self.socketRoom).emit(self.jadeData.SkillOutput[1].Done.updateEvent,
         true);
   }
   console.log(preLog() + 'onDoneChange', data.value.value);
 };
 module.prototype.onExecuteChange = function(data) {
-  var self = mi5Input; // since it is called before getModuleData
+  var self = mi5InputBarcode; // since it is called before getModuleData
   console.log(preLog() + 'onExecuteChange', data.value.value);
 
   // new task arrived
   if (data.value.value === true) {
     io.to(self.socketRoom).emit(
-        self.jadeData.SkillInput[0].Execute.updateEvent, true);
+        self.jadeData.SkillInput[1].Execute.updateEvent, true);
     io.to(self.socketRoom).emit('reloadPageInput', 0);
 
     // Get fresh module data - only state skills are monitored
-    mi5Input.getInput(function(){
-      var taskId = self.jadeData.SkillInput[0].ParameterInput[1].Value.value;
+    mi5InputBarcode.getInput(function(){
+      var taskId = self.jadeData.SkillInput[1].ParameterInput[1].Value.value;
       console.log(preLog(), 'taskId is ',taskId);
     });
 
     // Navbar
-    io.emit('inputRequired', true);
+    io.emit('inputBarcodeRequired', true);
   }
 
   // task fully finished
   if (data.value.value === false) {
-    self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, false, function() {
+    self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, false, function() {
     });
-    self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, true, function() {
+    self.setValue(self.jadeData.SkillOutput[1].Ready.nodeId, true, function() {
     });
     io.emit('inputRequired', false);
     io.to(self.socketRoom).emit('reloadPageInput', 0);
@@ -266,15 +263,15 @@ module.prototype.onReadyChange = function(data) {
 // Soket
 
 module.prototype.ioRegister = function(socket) {
-  var self = mi5Input; // this would be socket.io io.on('connection')
+  var self = mi5InputBarcode; // this would be socket.io io.on('connection')
 
   _.bindAll(self, 'socketUserIsBusy', 'socketUserIsDone'); // reset scope
 
   assert(typeof socket !== 'undefined');
 
-  socket.on(self.jadeData.SkillOutput[0].Busy.submitEvent,
+  socket.on(self.jadeData.SkillOutput[1].Busy.submitEvent,
       self.socketUserIsBusy);
-  socket.on(self.jadeData.SkillOutput[0].Done.submitEvent,
+  socket.on(self.jadeData.SkillOutput[1].Done.submitEvent,
       self.socketUserIsDone);
 
   console.log(preLog() + 'OK - Input Module - event listeners registered');
@@ -283,11 +280,11 @@ module.prototype.ioRegister = function(socket) {
 module.prototype.socketUserIsBusy = function() {
   var self = this;
 
-  if(self.jadeData.SkillInput[0].Execute.value == true){
+  if(self.jadeData.SkillInput[1].Execute.value == true){
     console.log(preLog() + 'OK - User is busy');
-    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, true, function() {
+    self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, true, function() {
     });
-    self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, false, function() {
+    self.setValue(self.jadeData.SkillOutput[1].Ready.nodeId, false, function() {
     });
   } else {
     console.log(preLog() + 'someone pressed busy even though there is no execute!');
@@ -298,11 +295,11 @@ module.prototype.socketUserIsBusy = function() {
 module.prototype.socketUserIsDone = function() {
   var self = this;
 
-  if(self.jadeData.SkillInput[0].Execute.value == true) {
-    self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, true, function (err) {
+  if(self.jadeData.SkillInput[1].Execute.value == true) {
+    self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, true, function (err) {
       console.log(preLog() + 'OK - User is done');
     });
-    self.setValue(self.jadeData.SkillOutput[0].Busy.nodeId, false, function (err) {
+    self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, false, function (err) {
       console.log(preLog() + 'OK - waiting for PT to set execute = false');
     });
   } else {

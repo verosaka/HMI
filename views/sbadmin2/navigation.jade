@@ -28,6 +28,19 @@ nav.navbar.navbar-default.navbar-static-top(role='navigation',style='margin-bott
               }
             });
       li
+        a(href='/inputBarcode', style='color:#999999')
+          i.fa.fa-barcode.fa-fw
+          span#inputBarcodeBadge
+          script.
+            socket.on("inputBarcodeRequired", function (data) {
+              -console.log('JADE: inputBadge received');
+              if (data === false) {
+                $("#inputBarcodeBadge").removeClass("badge-top alert-danger").html("");
+              } else if (data === true) {
+                $("#inputBarcodeBadge").addClass("badge-top alert-danger").html('<i class="fa fa-map-marker fa-fw"></i>');
+              }
+            });
+      li
         a(href='/output', style='color:#999999')
           i.fa.fa-cubes.fa-fw
           span#outputBadge
@@ -95,10 +108,14 @@ nav.navbar.navbar-default.navbar-static-top(role='navigation',style='margin-bott
             a(href='/tasks')
               i.fa.fa-shopping-cart.fa-fw
               | Tasks
-          li 
+          li
             a(href='/input')
               i.fa.fa-cube.fa-fw
               | Manual Input
+          li
+            a(href='/inputBarcode')
+              i.fa.fa-barcode.fa-fw
+              | Manual Input & Barcode
           li 
             a(href='/output')
               i.fa.fa-cubes.fa-fw

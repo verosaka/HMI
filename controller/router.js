@@ -10,6 +10,7 @@ var tasks = require('./tasks');
 var manualModule = require('./manualModule');
 var maintenanceModule = require('./maintenanceModule');
 var inputModule = require('./inputModule');
+var inputBarcodeModule = require('./inputBarcodeModule');
 var outputModule = require('./outputModule');
 var camera = require('./camera');
 // Service Skill Interface
@@ -63,6 +64,9 @@ exports.router = function(app) {
 
   // Manual Input
   app.get('/input', inputModule.index);
+
+  // Manual Barcode Input
+  app.get('/inputBarcode', inputBarcodeModule.index);
 
   // Manual Output
   app.get('/output', outputModule.index);

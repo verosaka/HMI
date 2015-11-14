@@ -44,7 +44,7 @@ module = function() {
 exports.newOutputModule = new module();
 
 function preLog() {
-  return 'Output-Module:'.cyan;
+  return 'Output-Module: '.cyan;
 }
 
 module.prototype.start = function(callback) {
@@ -199,7 +199,7 @@ module.prototype.onExecuteChange = function(data) {
 
   if (data.value.value === true) {
     io.to(self.socketRoom).emit(self.jadeData.SkillInput[0].Execute.updateEvent, true);
-    // io.to(self.socketRoom).emit('reloadPageOutput', 0);
+    io.to(self.socketRoom).emit('reloadPageOutput', 0);
     // Navbar
     io.emit('outputRequired', true);
   }
