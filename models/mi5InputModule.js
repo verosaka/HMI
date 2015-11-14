@@ -19,11 +19,11 @@ var assert = require('assert');
  * @returns
  */
 module = function() {
-  this.NumberOfSkillInputs = 0; // 15 max, but only 2 needed!
-  this.NumberOfParameterInputs = 0; // 5 max
+  this.NumberOfSkillInputs = 1; // 15 max, but only 2 needed!
+  this.NumberOfParameterInputs = 1; // 5 max
 
-  this.NumberOfSkillOutputs = 0; // 15 max, but only 2 needed!
-  this.NumberOfParameterOutputs = 0; // 5 max
+  this.NumberOfSkillOutputs = 1; // 15 max, but only 2 needed!
+  this.NumberOfParameterOutputs = 1; // 5 max
   // this.NumberOfStateValues = 2; // 10 max
 
   this.isInitialized = false;
@@ -227,16 +227,22 @@ module.prototype.onDoneChange = function(data) {
 };
 module.prototype.onExecuteChange = function(data) {
   var self = mi5Input; // since it is called before getModuleData
+  console.log(preLog() + 'onExecuteChange', data.value.value);
 
+  // new task arrived
   if (data.value.value === true) {
     io.to(self.socketRoom).emit(
         self.jadeData.SkillInput[0].Execute.updateEvent, true);
-    // io.to(self.socketRoom).emit('reloadPageInput', 0);
+    io.to(self.socketRoom).emit('reloadPageInput', 0);
+    var taskId = self.jadeData.SkillInput[0].ParameterInput[1].Value.value;
+    console.log(preLog(), 'taskId is ',taskId);
+
     // Navbar
     io.emit('inputRequired', true);
   }
+
+  // task fully finished
   if (data.value.value === false) {
-    // task fully finished
     self.setValue(self.jadeData.SkillOutput[0].Done.nodeId, false, function() {
     });
     self.setValue(self.jadeData.SkillOutput[0].Ready.nodeId, true, function() {
@@ -244,7 +250,6 @@ module.prototype.onExecuteChange = function(data) {
     io.emit('inputRequired', false);
     io.to(self.socketRoom).emit('reloadPageInput', 0);
   }
-  console.log(preLog() + 'onExecuteChange', data.value.value);
 };
 module.prototype.onReadyChange = function(data) {
   if (data.value.value === true) {
