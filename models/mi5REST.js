@@ -95,7 +95,7 @@ mi5rest.prototype.updateOrderStatus = function(orderid, status){
           reject(new Error('statusCode is not ok \n res:' + JSON.stringify(res, '\n')));
         } else {
           // all fine
-          resolve(res);
+          resolve(res.body);
         }
       } else {
         reject(new Error(err));
