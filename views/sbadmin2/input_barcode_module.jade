@@ -55,12 +55,13 @@ block content
                   div.timeline-panel
                     div.timeline-heading
                       h4.timeline-title
-                        span.text-muted(id=module.SkillOutput[1].Busy.containerId+'text') Press when you are ready to start working.
+                        span.text-muted(id=module.SkillOutput[1].Busy.containerId+'text') Please insert the barcode below
                       script.
                         function busyIsTrue(){
-                          $("##{module.SkillOutput[1].Busy.containerId}icon").addClass('fa-check');
-                          $("##{module.SkillOutput[1].Busy.containerId}badge").addClass('success');
-                          $("##{module.SkillOutput[1].Busy.containerId}text").html('Started...');
+                            $("##{module.SkillOutput[1].Busy.containerId}icon").addClass('fa-check');
+                            $("##{module.SkillOutput[1].Busy.containerId}badge").addClass('success');
+                            $("#barcodeFieldBadge").addClass('success');
+                            $("##{module.SkillOutput[1].Busy.containerId}text").html('Started...');
                         }
                         socket.on("#{module.SkillOutput[1].Busy.updateEvent}", function(data){
                           if(data === true){
@@ -71,15 +72,27 @@ block content
                           console.log('mmBusy.value true');
                           busyIsTrue();
                         }
-            
+                // Barcode Field
                 li.timeline-inverted
-                  div.timeline-badge(id=module.SkillOutput[1].Done.containerId+'badge', onclick="socket.emit('#{module.SkillOutput[1].Done.submitEvent}', {value: true});", style="cursor: pointer")
+                  div.timeline-badge(id='barcodeFieldBadge')
+                    i.fa.fa-barcode
+                  div.timeline-panel
+                    div.timeline-heading
+                      h4.timeline-title
+                        input(type='text', name='barcode', id='barcodeField')
+                // Stop Button
+                li.timeline-inverted
+                  div.timeline-badge(id=module.SkillOutput[1].Done.containerId+'badge', onclick="onclickDone()", style="cursor: pointer")
                     i.fa.fa-stop
                   div.timeline-panel
                     div.timeline-heading
                       h4.timeline-title
                        span.text-muted(id=module.SkillOutput[1].Done.containerId+'text') Press when you finished the task.
                       script.
+                       function onclickDone(){
+                         socket.emit('#{module.SkillOutput[1].Done.submitEvent}', {value: true, barcode: document.getElementById('barcodeField').value});
+                       }
+
                        var userFullyFinished = 0; // global in DOM space? yes.
                        function doneIsTrue(){
                          $("##{module.SkillOutput[1].Done.containerId}badge").addClass('success');

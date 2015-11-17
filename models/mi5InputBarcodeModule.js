@@ -43,6 +43,7 @@ module = function() {
   this.Mi5ModuleInterface = require('./../models/simpleDataTypeMapping.js').Mi5ModuleInterface;
 
   this.state = ''; // ready -> execute -> busy -> done -> ready
+  this._currentTaskId;
 };
 exports.newInputModule = new module();
 
@@ -235,8 +236,8 @@ module.prototype.onExecuteChange = function(data) {
 
     // Get fresh module data - only state skills are monitored
     mi5InputBarcode.getInput(function(){
-      var taskId = self.jadeData.SkillInput[1].ParameterInput[1].Value.value;
-      console.log(preLog(), 'taskId is ',taskId);
+      self._currentTaskId = self.jadeData.SkillInput[1].ParameterInput[1].Value.value;
+      console.log(preLog(), 'taskId is ',self._currentTaskId);
     });
 
     // Navbar
@@ -292,9 +293,14 @@ module.prototype.socketUserIsBusy = function() {
 
 };
 
-module.prototype.socketUserIsDone = function() {
+module.prototype.socketUserIsDone = function(value) {
   var self = this;
 
+  var barcode = value.barcode;
+  var taskId  = self._currentTaskId;
+  console.log(barcode, taskId);
+
+  // Correctly finished work
   if(self.jadeData.SkillInput[1].Execute.value == true) {
     self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, true, function (err) {
       console.log(preLog() + 'OK - User is done');
@@ -302,7 +308,18 @@ module.prototype.socketUserIsDone = function() {
     self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, false, function (err) {
       console.log(preLog() + 'OK - waiting for PT to set execute = false');
     });
-  } else {
+
+    mi5REST.setBarcodeToOrderId(taskId, barcode)
+      .then(function(status){
+        console.log(status);
+        console.log(preLog() + 'OK - barcode '+barcode+' was connected with taskId'+taskId);
+      })
+      .catch(function(err){
+        console.log(preLog(), err);
+      });
+  }
+  // Not correct
+  else {
     console.log(preLog() + 'someone pressed done even though there is no execute!');
   }
 };
