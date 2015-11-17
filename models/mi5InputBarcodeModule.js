@@ -311,7 +311,6 @@ module.prototype.socketUserIsDone = function(value) {
 
     mi5REST.setBarcodeToOrderId(taskId, barcode)
       .then(function(status){
-        console.log(status);
         console.log(preLog() + 'OK - barcode '+barcode+' was connected with taskId'+taskId);
       })
       .catch(function(err){
