@@ -137,6 +137,43 @@ mi5rest.prototype.updateOrderStatus = function(orderid, status){
   });
 };
 
+mi5rest.prototype.placeOrder = function(recipeId, parameters, marketPlaceId){
+  var self = instance;
+  var order = {
+    recipeId: recipeId,
+    parameters: parameters,
+    marketPlaceId: marketPlaceId
+  };
+
+  var options = {
+    url: CONFIG.RESTHost+'/placeOrder',
+    rejectUnauthorized: false,
+    form: {
+      order: JSON.stringify(order)
+    },
+    auth: {
+      user: CONFIG.RESTUser,
+      password: CONFIG.RESTPassword
+    }
+  };
+
+  return Q.promise(function(resolve, reject){
+    request.post(options, function(err, res){
+      if(!err){
+        // check res
+        if(res.statusCode != 200) {
+          reject(new Error('statusCode is not ok \n res:' + JSON.stringify(res, '\n')));
+        } else {
+          // all fine
+          resolve(res.body);
+        }
+      } else {
+        reject(new Error(err));
+      }
+    });
+  });
+};
+
 mi5rest.prototype._checkServer = function(){
   var self = this;
 

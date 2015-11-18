@@ -86,32 +86,50 @@ function placeOrder(req, res) {
   // Debug
   console.log('ORDER'.bgBlue, order, userParameters);
 
-  recipeInterface.setOrder(order, userParameters, function(err) {
-    if (err) {
-      var jadeData = {
-        content : 'Error'
-      };
-      res.render('bootstrap/blank', jadeData);
-    }
-
-    // Save the order to the Database
-    mi5Database.saveOrder(taskId, recipeId, postParameters)
-      .fail(function(err){
-        console.log('mi5database.saveOrder - err: ',err);
+  /**
+   * Swap order CloudLink or legacy (legacy=as always over recipe tool)
+   */
+  console.log('Decide wether to order via CloudLink?',CONFIG.OrderViaCloudLink);
+  if(CONFIG.OrderViaCloudLink) {
+    mi5REST.placeOrder(recipeId, postParameters, 'itq')
+      .then(function(result){
+        console.log(result);
+        res.redirect('/order/placed/' + result.orderId);
+      })
+      .catch(function(err){
+        jadeData.content = err;
+        res.render('bootstrap/blank', jadeData);
       });
+  }
+  // Legacy
+  else {
+    recipeInterface.setOrder(order, userParameters, function (err) {
+      if (err) {
+        var jadeData = {
+          content: 'Error'
+        };
+        res.render('bootstrap/blank', jadeData);
+      }
 
-    var jadeData = {
-      content : 'Order has been placed! The corresponding (unique) TaskID is :' + taskId,
-      list : [ {
-        href : '/taskViewTest?taskId=' + taskId,
-        title : 'Redirect to specific TaskView'
-      }, {
-        href : '/taskViewTest',
-        title : 'Redirect to global TaskView'
-      } ]
-    };
-    res.redirect('/order/placed/' + taskId);
-  });
+      // Save the order to the Database
+      mi5Database.saveOrder(taskId, recipeId, postParameters)
+        .fail(function (err) {
+          console.log('mi5database.saveOrder - err: ', err);
+        });
+
+      var jadeData = {
+        content: 'Order has been placed! The corresponding (unique) TaskID is :' + taskId,
+        list: [{
+          href: '/taskViewTest?taskId=' + taskId,
+          title: 'Redirect to specific TaskView'
+        }, {
+          href: '/taskViewTest',
+          title: 'Redirect to global TaskView'
+        }]
+      };
+      res.redirect('/order/placed/' + taskId);
+    });
+  }
 
 }
 exports.placeOrder = placeOrder;
