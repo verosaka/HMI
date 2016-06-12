@@ -146,8 +146,7 @@ mi5database.prototype.saveRecommendation = function(recommendation){
 mi5database.prototype.getRecommendation = function(taskId){
   var self = instance;
   var deferred = Q.defer();
-
-  self.Recommendation.find({'productId': taskId}).limit(1).exec(function(err, post){
+  self.Recommendation.find({'productId': taskId}).sort({'timestamp': -1}).limit(1).exec(function(err, post){
     if(err) deferred.reject(err);
 
     deferred.resolve(post.pop());
