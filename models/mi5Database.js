@@ -25,7 +25,7 @@ mi5database = function() {
 
   var recommendationSchema = this.mongoose.Schema({
     productId: Number,
-    timestamp: Date,
+    timestamp: { type: Date, default: Date.now },
     recipe: this.mongoose.Schema.Types.Mixed,
     order: this.mongoose.Schema.Types.Mixed,
     review: this.mongoose.Schema.Types.Mixed,
