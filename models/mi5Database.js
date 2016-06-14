@@ -138,6 +138,9 @@ mi5database.prototype.saveOrder = function(taskId, recipeId, userParameters){
 mi5database.prototype.saveRecommendation = function(recommendation){
   var self = instance;
 
+  //temporary bugfix for timestamp
+  delete recommendation.timestamp;
+
   var NewRecommendation = new self.Recommendation(recommendation);
   console.log('new recommendation saved:'+recommendation);
   return NewRecommendation.saveQ();
