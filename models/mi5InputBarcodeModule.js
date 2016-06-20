@@ -298,24 +298,57 @@ module.prototype.socketUserIsDone = function(value) {
 
   var barcode = value.barcode;
   var taskId  = self._currentTaskId;
-  console.log(barcode, taskId);
+  console.log(preLog(), 'execute pressed with barcode "'+barcode+'" and taskId ', taskId);
 
   // Correctly finished work
   if(self.jadeData.SkillInput[1].Execute.value == true) {
-    self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, true, function (err) {
-      console.log(preLog() + 'OK - User is done');
-    });
-    self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, false, function (err) {
-      console.log(preLog() + 'OK - waiting for PT to set execute = false');
-    });
 
-    mi5REST.setBarcodeToOrderId(taskId, barcode)
-      .then(function(status){
-        console.log(preLog() + 'OK - barcode '+barcode+' was connected with taskId'+taskId);
-      })
-      .catch(function(err){
-        console.log(preLog(), err);
-      });
+    function setDone(value){
+			self.setValue(self.jadeData.SkillOutput[1].Done.nodeId, value, function (err) {
+				console.log(preLog() + 'OK - User is done');
+			});
+		}
+		function setBusy(value){
+			self.setValue(self.jadeData.SkillOutput[1].Busy.nodeId, value, function (err) {
+				console.log(preLog() + 'OK - waiting for PT to set execute = false');
+			});
+		}
+		
+		function writeBarcode(barcode, taskId){
+			return mi5REST.setBarcodeToOrderId(taskId, barcode)
+				.then(function(status){
+					var message = JSON.parse(status.body);
+					if(message.status === 'err'){
+						console.log(message.description);
+						io.to(self.socketRoom).emit(self.jadeData.SkillOutput[1].Done.updateEvent, {value: false, info: message.description});
+						return false;
+					} else {
+						console.log(message.description);
+						console.log(preLog() + 'OK - barcode '+barcode+' was connected with taskId'+taskId);
+						return true;
+					}
+				})
+				.catch(function(err){
+					console.log(preLog(), err);
+				});
+		}
+		
+		if(barcode == ""){
+			setDone(true);
+			setBusy(false);
+		} else {
+			console.log('barcode is not empty');
+			writeBarcode(barcode, taskId)
+				.then(function(value){
+					if(value){
+						setDone(true);
+						setBusy(false);
+					}
+				});
+
+		}
+
+
   }
   // Not correct
   else {

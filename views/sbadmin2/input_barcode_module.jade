@@ -98,9 +98,15 @@ block content
                          $("##{module.SkillOutput[1].Done.containerId}badge").addClass('success');
                          $("##{module.SkillOutput[1].Done.containerId}text").html('Done.');                         
                        }
+                       function doneIsFalse(info){
+                         $("##{module.SkillOutput[1].Done.containerId}badge").removeClass('success');
+                         $("##{module.SkillOutput[1].Done.containerId}text").html(info);                         
+                       }
                        socket.on("#{module.SkillOutput[1].Done.updateEvent}", function(data){ 
                          if(data === true){
                            doneIsTrue();                           
+                         } else {
+                           doneIsFalse(data.info);
                          }
                        });
                        if(#{module.SkillOutput[1].Done.value}===true){ 
