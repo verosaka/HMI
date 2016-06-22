@@ -102,7 +102,22 @@ function consoleLogQ(mix){
 function recommendation(req, res) {
   var jadeData = {};
 
-  mi5Database.getLastRecommendationId()
+  mi5REST.getLastRecommendation()
+    .then(console.logQ)
+    .then(function(recommendation){
+      if(typeof recommendation == 'undefined') throw 'no recommendation found';
+      jadeData.recommendation = recommendation;
+      console.log(recommendation);
+      res.render('sbadmin2/cocktail_recommendation', jadeData);
+      res.end();
+    })
+    .catch(function (e) {
+      console.error(e);
+      res.send(e);
+      res.end();
+    });
+
+  /*mi5Database.getLastRecommendationId()
     .then(consoleLogQ)
     .then(mi5Database.getRecommendation)
     .then(consoleLogQ)
@@ -118,7 +133,7 @@ function recommendation(req, res) {
       console.error(e);
       res.send(e);
       res.end();
-    });
+    });*/
 }
 exports.recommendation = recommendation;
 

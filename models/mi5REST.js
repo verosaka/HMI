@@ -203,3 +203,33 @@ mi5rest.prototype._checkServer = function(){
     });
   });
 };
+
+mi5rest.prototype.getLastRecommendation = function(){
+  var self = instance;
+
+  var options = {
+    url: CONFIG.RESTHost+'/getLastRecommendation',
+    rejectUnauthorized: false,
+    auth: {
+      user: CONFIG.RESTUser,
+      password: CONFIG.RESTPassword
+    }
+  };
+
+  return Q.promise(function(resolve, reject){
+    request.get(options, function(err, res){
+      if(!err){
+        // check res
+        if(res.statusCode != 200) {
+          reject(new Error('statusCode is not ok \n res:' + JSON.stringify(res, '\n')));
+        } else {
+          // all fine
+          console.log('rest get last recommendation: '+res.body);
+          resolve(res.body);
+        }
+      } else {
+        reject(new Error(err));
+      }
+    });
+  });
+};
